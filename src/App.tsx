@@ -137,7 +137,7 @@ function App() {
               path="/explore"
               element={
                 <Layout>
-                  <BusinessExplorer />
+                  <BusinessExplorer quizData={quizData} />
                 </Layout>
               }
             />
