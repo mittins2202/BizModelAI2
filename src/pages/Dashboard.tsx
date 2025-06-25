@@ -52,18 +52,6 @@ const Dashboard: React.FC = () => {
       status: 'In Progress',
       progress: 65
     },
-    secondMatch: {
-      name: 'Affiliate Marketing',
-      fitScore: 82,
-      status: 'Recommended',
-      progress: 0
-    },
-    thirdMatch: {
-      name: 'Virtual Assistant',
-      fitScore: 78,
-      status: 'Good Fit',
-      progress: 0
-    },
     weeklyProgress: [
       { day: 'Mon', completed: 3, planned: 4 },
       { day: 'Tue', completed: 5, planned: 5 },
@@ -302,142 +290,70 @@ const Dashboard: React.FC = () => {
           ))}
         </motion.div>
 
-        {/* Top 3 Business Matches */}
+        {/* Current Business Match Highlight */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.15 }}
-          className="mb-8"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 rounded-3xl p-8 text-white mb-8 shadow-2xl"
         >
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Your Top Business Matches</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* First Match - Current Business */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="relative bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 rounded-3xl p-8 text-white shadow-2xl"
-            >
-              {/* Top Match Badge */}
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center">
-                  <Star className="h-4 w-4 mr-2" />
-                  TOP MATCH
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between">
+            <div className="flex-1">
+              <div className="flex items-center mb-4">
+                <Star className="h-6 w-6 text-yellow-400 mr-2" />
+                <span className="text-yellow-200 font-medium">Your Top Business Match</span>
+              </div>
+              <h2 className="text-3xl font-bold mb-2">{dashboardData.topMatch.name}</h2>
+              <p className="text-blue-100 mb-4 text-lg">
+                {dashboardData.topMatch.fitScore}% compatibility • {dashboardData.topMatch.status}
+              </p>
+              
+              <div className="mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-blue-100">Progress</span>
+                  <span className="text-white font-semibold">{dashboardData.topMatch.progress}%</span>
+                </div>
+                <div className="w-full bg-blue-800/30 rounded-full h-3">
+                  <motion.div 
+                    className="bg-gradient-to-r from-yellow-400 to-orange-400 h-3 rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${dashboardData.topMatch.progress}%` }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  />
                 </div>
               </div>
               
-              <div className="mt-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="text-3xl font-bold">{dashboardData.topMatch.fitScore}%</div>
-                  <div className="text-yellow-200 text-sm">Match</div>
-                </div>
-                <h3 className="text-xl font-bold mb-2">{dashboardData.topMatch.name}</h3>
-                <p className="text-blue-100 mb-4">{dashboardData.topMatch.status}</p>
-                
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-blue-100 text-sm">Progress</span>
-                    <span className="text-white font-semibold text-sm">{dashboardData.topMatch.progress}%</span>
-                  </div>
-                  <div className="w-full bg-blue-800/30 rounded-full h-2">
-                    <motion.div 
-                      className="bg-gradient-to-r from-yellow-400 to-orange-400 h-2 rounded-full"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${dashboardData.topMatch.progress}%` }}
-                      transition={{ duration: 1, delay: 0.5 }}
-                    />
-                  </div>
-                </div>
-                
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to="/guide/content-creation-ugc"
-                  className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center text-sm"
+                  className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center"
                 >
                   <Play className="h-4 w-4 mr-2" />
                   Continue Journey
                 </Link>
-              </div>
-            </motion.div>
-
-            {/* Second Match */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="relative bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
-            >
-              {/* 2nd Best Badge - Positioned more to the right */}
-              <div className="absolute -top-3 right-6">
-                <div className="bg-gradient-to-r from-gray-400 to-gray-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center">
-                  <Award className="h-4 w-4 mr-2" />
-                  2ND BEST
-                </div>
-              </div>
-              
-              <div className="mt-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="text-3xl font-bold text-gray-600">{dashboardData.secondMatch.fitScore}%</div>
-                  <div className="text-gray-500 text-sm">Match</div>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{dashboardData.secondMatch.name}</h3>
-                <p className="text-gray-600 mb-4">{dashboardData.secondMatch.status}</p>
-                
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-gray-500 text-sm">Progress</span>
-                    <span className="text-gray-700 font-semibold text-sm">{dashboardData.secondMatch.progress}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gray-400 h-2 rounded-full" style={{ width: `${dashboardData.secondMatch.progress}%` }} />
-                  </div>
-                </div>
-                
                 <Link
-                  to="/business/affiliate-marketing"
-                  className="bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-gray-700 transition-colors flex items-center justify-center text-sm"
+                  to="/results"
+                  className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors flex items-center"
                 >
                   <Eye className="h-4 w-4 mr-2" />
-                  Learn More
+                  View Full Report
                 </Link>
               </div>
-            </motion.div>
-
-            {/* Third Match */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="relative bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
-            >
-              {/* 3rd Best Badge - Positioned more to the right */}
-              <div className="absolute -top-3 right-6">
-                <div className="bg-gradient-to-r from-orange-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg flex items-center">
-                  <Award className="h-4 w-4 mr-2" />
-                  3RD BEST
-                </div>
-              </div>
-              
-              <div className="mt-4">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="text-3xl font-bold text-orange-600">{dashboardData.thirdMatch.fitScore}%</div>
-                  <div className="text-orange-500 text-sm">Match</div>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{dashboardData.thirdMatch.name}</h3>
-                <p className="text-gray-600 mb-4">{dashboardData.thirdMatch.status}</p>
-                
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-gray-500 text-sm">Progress</span>
-                    <span className="text-gray-700 font-semibold text-sm">{dashboardData.thirdMatch.progress}%</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-orange-400 h-2 rounded-full" style={{ width: `${dashboardData.thirdMatch.progress}%` }} />
+            </div>
+            
+            <div className="mt-6 lg:mt-0 lg:ml-8">
+              <div className="relative">
+                <div className="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center backdrop-blur-sm">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold">{dashboardData.topMatch.fitScore}%</div>
+                    <div className="text-sm text-blue-200">Match</div>
                   </div>
                 </div>
-                
-                <Link
-                  to="/business/virtual-assistant"
-                  className="bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors flex items-center justify-center text-sm"
-                >
-                  <Eye className="h-4 w-4 mr-2" />
-                  Learn More
-                </Link>
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                  <Star className="h-4 w-4 text-yellow-800" />
+                </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </motion.div>
 
