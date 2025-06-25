@@ -44,6 +44,30 @@ const BusinessExplorer: React.FC<BusinessExplorerProps> = ({ quizData }) => {
   const difficulties = ["All", "Beginner", "Intermediate", "Advanced"];
   const fitCategories = ["All", "Best", "Strong", "Possible", "Poor"];
 
+  // Function to determine fit category based on score
+  const getFitCategory = (score: number): string => {
+    if (score >= 80) return "Best";
+    if (score >= 60) return "Strong";
+    if (score >= 40) return "Possible";
+    return "Poor";
+  };
+
+  // Function to get fit category colors
+  const getFitCategoryColor = (category: string): string => {
+    switch (category) {
+      case "Best":
+        return "bg-green-100 text-green-800";
+      case "Strong":
+        return "bg-blue-100 text-blue-800";
+      case "Possible":
+        return "bg-yellow-100 text-yellow-800";
+      case "Poor":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
   // Calculate fit scores for business models if quiz data exists
   const businessModelsWithFitScores = useMemo(() => {
     if (!quizData || !hasUnlockedAnalysis) {
@@ -75,30 +99,6 @@ const BusinessExplorer: React.FC<BusinessExplorerProps> = ({ quizData }) => {
       };
     });
   }, [quizData, hasUnlockedAnalysis]);
-
-  // Function to determine fit category based on score
-  const getFitCategory = (score: number): string => {
-    if (score >= 80) return "Best";
-    if (score >= 60) return "Strong";
-    if (score >= 40) return "Possible";
-    return "Poor";
-  };
-
-  // Function to get fit category colors
-  const getFitCategoryColor = (category: string): string => {
-    switch (category) {
-      case "Best":
-        return "bg-green-100 text-green-800";
-      case "Strong":
-        return "bg-blue-100 text-blue-800";
-      case "Possible":
-        return "bg-yellow-100 text-yellow-800";
-      case "Poor":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
 
   const filteredModels = businessModelsWithFitScores.filter((model) => {
     const categoryMatch =
