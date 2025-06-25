@@ -257,8 +257,8 @@ function Index() {
       </section>
 
       {/* Simple Divider Section */}
-      <section className="py-8 bg-slate-900">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-4 bg-slate-900">
+        <div className="max-w-2xl mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
