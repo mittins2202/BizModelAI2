@@ -425,7 +425,7 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                 <p className="text-red-800 text-sm">
                   <strong>Important Note:</strong> These business models scored lowest for your current profile. 
-                  This doesn't mean they're bad businesses—they just don't align well with your current goals, skills, or preferences. 
+                  This doesn't mean they\'re bad businesses—they just don't align well with your current goals, skills, or preferences. 
                   As you grow and develop, some of these might become viable options in the future.
                 </p>
               </div>
