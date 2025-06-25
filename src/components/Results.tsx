@@ -212,6 +212,7 @@ const Results: React.FC<ResultsProps> = ({ quizData, onBack, userEmail }) => {
 
   const handleViewFullReport = (path: BusinessPath) => {
     if (!canAccessFullReport()) {
+      setSelectedPath(path);
       setPaywallType("full-report");
       setShowUnlockModal(true);
       return;
@@ -227,6 +228,7 @@ const Results: React.FC<ResultsProps> = ({ quizData, onBack, userEmail }) => {
       navigate(`/business/${path.id}`);
     } else {
       // Otherwise, show the paywall modal
+      setSelectedPath(path);
       setPaywallType("learn-more");
       setShowUnlockModal(true);
     }
@@ -247,8 +249,17 @@ const Results: React.FC<ResultsProps> = ({ quizData, onBack, userEmail }) => {
     setShowUnlockModal(false);
     setIsProcessingPayment(false);
 
-    // Navigate to full report analysis page
-    setShowFullReport(true);
+    // Route based on which button was clicked
+    if (paywallType === "learn-more" && selectedPath) {
+      // Navigate to "How business model X works for you" page
+      navigate(`/business/${selectedPath.id}`);
+    } else if (paywallType === "full-report") {
+      // Show the full report
+      setShowFullReport(true);
+    } else {
+      // Default fallback to full report
+      setShowFullReport(true);
+    }
 
     // In a real implementation, this would:
     // 1. Process payment through Stripe

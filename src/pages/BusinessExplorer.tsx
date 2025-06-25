@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -12,10 +12,17 @@ import {
 import { businessModels, BusinessModel } from "../data/businessModels";
 import { PaywallModal } from "../components/PaywallModals";
 import { usePaywall } from "../contexts/PaywallContext";
+import { QuizData } from "../types";
+import { generatePersonalizedPaths } from "../utils/quizLogic";
 
-const BusinessExplorer = () => {
+interface BusinessExplorerProps {
+  quizData?: QuizData | null;
+}
+
+const BusinessExplorer: React.FC<BusinessExplorerProps> = ({ quizData }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("All");
+  const [selectedFitCategory, setSelectedFitCategory] = useState<string>("All");
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [showPaywallModal, setShowPaywallModal] = useState(false);
   const [paywallType, setPaywallType] = useState<
@@ -23,20 +30,85 @@ const BusinessExplorer = () => {
   >("quiz-required");
   const [selectedBusinessId, setSelectedBusinessId] = useState<string>("");
   const navigate = useNavigate();
-  const { hasCompletedQuiz, canAccessBusinessModel, setHasUnlockedAnalysis } = usePaywall();
+  const {
+    hasCompletedQuiz,
+    canAccessBusinessModel,
+    setHasUnlockedAnalysis,
+    hasUnlockedAnalysis,
+  } = usePaywall();
 
   const categories = [
     "All",
     ...Array.from(new Set(businessModels.map((model) => model.category))),
   ];
   const difficulties = ["All", "Beginner", "Intermediate", "Advanced"];
+  const fitCategories = ["All", "Best", "Strong", "Possible", "Poor"];
 
-  const filteredModels = businessModels.filter((model) => {
+  // Function to determine fit category based on score
+  const getFitCategory = (score: number): string => {
+    if (score >= 80) return "Best";
+    if (score >= 60) return "Strong";
+    if (score >= 40) return "Possible";
+    return "Poor";
+  };
+
+  // Function to get fit category colors
+  const getFitCategoryColor = (category: string): string => {
+    switch (category) {
+      case "Best":
+        return "bg-green-100 text-green-800";
+      case "Strong":
+        return "bg-blue-100 text-blue-800";
+      case "Possible":
+        return "bg-yellow-100 text-yellow-800";
+      case "Poor":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  // Calculate fit scores for business models if quiz data exists
+  const businessModelsWithFitScores = useMemo(() => {
+    if (!quizData || !hasUnlockedAnalysis) {
+      return businessModels.map((model) => ({
+        ...model,
+        fitScore: 0,
+        fitCategory: null,
+      }));
+    }
+
+    // Generate personalized paths to get fit scores
+    const personalizedPaths = generatePersonalizedPaths(quizData);
+
+    return businessModels.map((model) => {
+      // Find matching business path by name or similar logic
+      const matchingPath = personalizedPaths.find(
+        (path) =>
+          path.name.toLowerCase().includes(model.title.toLowerCase()) ||
+          model.title.toLowerCase().includes(path.name.toLowerCase()),
+      );
+
+      const fitScore = matchingPath?.fitScore || 0;
+      const fitCategory = getFitCategory(fitScore);
+
+      return {
+        ...model,
+        fitScore,
+        fitCategory,
+      };
+    });
+  }, [quizData, hasUnlockedAnalysis]);
+
+  const filteredModels = businessModelsWithFitScores.filter((model) => {
     const categoryMatch =
       selectedCategory === "All" || model.category === selectedCategory;
     const difficultyMatch =
       selectedDifficulty === "All" || model.difficulty === selectedDifficulty;
-    return categoryMatch && difficultyMatch;
+    const fitCategoryMatch =
+      selectedFitCategory === "All" ||
+      model.fitCategory === selectedFitCategory;
+    return categoryMatch && difficultyMatch && fitCategoryMatch;
   });
 
   const handleCardExpand = (modelId: string) => {
@@ -131,9 +203,28 @@ const BusinessExplorer = () => {
                 ))}
               </select>
             </div>
+            {/* Fit Category Filter - Only show if user has paid */}
+            {hasUnlockedAnalysis && quizData && (
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Fit Level:
+                </label>
+                <select
+                  value={selectedFitCategory}
+                  onChange={(e) => setSelectedFitCategory(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                >
+                  {fitCategories.map((fitCategory) => (
+                    <option key={fitCategory} value={fitCategory}>
+                      {fitCategory}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             <div className="ml-auto text-sm text-gray-600">
-              Showing {filteredModels.length} of {businessModels.length}{" "}
-              business models
+              Showing {filteredModels.length} of{" "}
+              {businessModelsWithFitScores.length} business models
             </div>
           </div>
         </div>
@@ -147,6 +238,10 @@ const BusinessExplorer = () => {
               onLearnMore={handleLearnMore}
               isExpanded={expandedCard === model.id}
               onToggleExpand={() => handleCardExpand(model.id)}
+              showFitBadge={hasUnlockedAnalysis && quizData}
+              fitCategory={model.fitCategory}
+              fitScore={model.fitScore}
+              getFitCategoryColor={getFitCategoryColor}
             />
           ))}
         </div>
@@ -166,7 +261,11 @@ const BusinessExplorer = () => {
         onClose={handlePaywallClose}
         onUnlock={handlePaywallUnlock}
         type={paywallType}
-        title={selectedBusinessId ? businessModels.find(m => m.id === selectedBusinessId)?.title : undefined}
+        title={
+          selectedBusinessId
+            ? businessModels.find((m) => m.id === selectedBusinessId)?.title
+            : undefined
+        }
       />
     </div>
   );
@@ -177,11 +276,19 @@ const BusinessModelCard = ({
   onLearnMore,
   isExpanded,
   onToggleExpand,
+  showFitBadge,
+  fitCategory,
+  fitScore,
+  getFitCategoryColor,
 }: {
-  model: BusinessModel;
+  model: BusinessModel & { fitScore?: number; fitCategory?: string };
   onLearnMore: (businessId: string) => void;
   isExpanded: boolean;
   onToggleExpand: () => void;
+  showFitBadge?: boolean;
+  fitCategory?: string | null;
+  fitScore?: number;
+  getFitCategoryColor?: (category: string) => string;
 }) => {
   const [showAllSkills, setShowAllSkills] = useState(false);
 
@@ -256,11 +363,21 @@ const BusinessModelCard = ({
           <h3 className="text-xl font-bold text-gray-900 flex-1 mr-2 line-clamp-2">
             {model.title}
           </h3>
-          <span
-            className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${getDifficultyColor(model.difficulty)}`}
-          >
-            {model.difficulty}
-          </span>
+          <div className="flex flex-col gap-1 items-end">
+            <span
+              className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${getDifficultyColor(model.difficulty)}`}
+            >
+              {model.difficulty}
+            </span>
+            {/* Fit Badge - Only show if user has paid */}
+            {showFitBadge && fitCategory && getFitCategoryColor && (
+              <span
+                className={`px-2 py-1 rounded-full text-xs font-medium flex-shrink-0 ${getFitCategoryColor(fitCategory)}`}
+              >
+                {fitCategory} Fit
+              </span>
+            )}
+          </div>
         </div>
 
         <p className="text-gray-600 mb-4 line-clamp-3">{model.description}</p>

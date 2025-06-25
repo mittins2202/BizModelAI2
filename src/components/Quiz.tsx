@@ -200,15 +200,15 @@ const ExitWarningModal: React.FC<ExitWarningModalProps> = ({
                 ⚠️ You will lose all progress!
               </p>
               <p className="text-red-700">
-                You'll need to restart the entire quiz from the beginning to
-                get your personalized business recommendations.
+                You'll need to restart the entire quiz from the beginning to get
+                your personalized business recommendations.
               </p>
             </div>
 
             <p className="text-gray-600 leading-relaxed">
               The quiz takes 10-15 minutes to complete and provides valuable
-              insights about your perfect business match. Are you sure you
-              want to lose your progress?
+              insights about your perfect business match. Are you sure you want
+              to lose your progress?
             </p>
           </motion.div>
 
@@ -264,7 +264,7 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
 
   // Debug logging for exit modal state
   useEffect(() => {
-    console.log('Exit modal state changed:', showExitModal);
+    console.log("Exit modal state changed:", showExitModal);
   }, [showExitModal]);
 
   // Get current round info
@@ -281,38 +281,38 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
   // Global keyboard event handler for escape key
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         event.preventDefault();
         setShowExitModal(true);
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   // Add keyboard event handlers for round intro pages
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (showRoundIntro) {
-        if (event.key === 'Enter') {
+        if (event.key === "Enter") {
           event.preventDefault();
           handleRoundContinue();
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [showRoundIntro]);
 
   // Add keyboard event handlers for quiz questions
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Only handle Enter key on quiz questions (not round intro pages)
-      if (!showRoundIntro && event.key === 'Enter') {
+      if (!showRoundIntro && event.key === "Enter") {
         event.preventDefault();
-        
+
         // Check if user can proceed (has answered the question)
         const currentStepData = quizSteps[currentStep];
         const canProceed =
@@ -320,15 +320,15 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
           (currentStepData?.type !== "multiselect" ||
             (Array.isArray(formData[currentStepData?.field]) &&
               (formData[currentStepData?.field] as any[]).length > 0));
-        
+
         if (canProceed && !isAnimating) {
           handleNext();
         }
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [showRoundIntro, formData, currentStep, isAnimating]);
 
   const handleNext = async () => {
@@ -415,11 +415,11 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
   const handleBackButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Back button clicked - showing exit modal immediately');
-    
+    console.log("Back button clicked - showing exit modal immediately");
+
     // Force immediate state update using callback form
-    setShowExitModal(prevState => {
-      console.log('Setting exit modal to true, previous state was:', prevState);
+    setShowExitModal((prevState) => {
+      console.log("Setting exit modal to true, previous state was:", prevState);
       return true;
     });
   };
@@ -433,18 +433,18 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
     if (currentStep > 0) {
       const prevStep = currentStep - 1;
       setCurrentStep(prevStep);
-      
+
       // Find the round for the previous step
       const prevRoundInfo = rounds.find(
         (round) =>
           prevStep >= round.questionRange[0] &&
           prevStep <= round.questionRange[1],
       );
-      
+
       if (prevRoundInfo) {
         setCurrentRound(prevRoundInfo.id);
       }
-      
+
       setShowRoundIntro(false);
     } else {
       // If we're at the first step, show exit modal
@@ -641,6 +641,13 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
             )}
           </motion.div>
         </div>
+
+        {/* Exit Warning Modal */}
+        <ExitWarningModal
+          isOpen={showExitModal}
+          onClose={() => setShowExitModal(false)}
+          onConfirmExit={handleExitQuiz}
+        />
       </div>
     );
   }
@@ -870,7 +877,7 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
                   {isLastStep ? "Get My Results" : "Next"}
                   {!isLastStep && <ChevronRight className="h-5 w-5 ml-2" />}
                 </button>
-                
+
                 {/* Enter key hint */}
                 {canProceed && (
                   <p className="text-xs text-gray-400 mt-2">
@@ -887,7 +894,9 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
       <div className="fixed bottom-4 right-4 z-[9999]">
         <button
           onClick={() => {
-            console.log("Skip button clicked! Generating mock data and navigating...");
+            console.log(
+              "Skip button clicked! Generating mock data and navigating...",
+            );
             const mockData = {
               mainMotivation: "financial-freedom",
               firstIncomeTimeline: "3-6-months",

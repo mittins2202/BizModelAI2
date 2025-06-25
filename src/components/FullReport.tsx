@@ -873,17 +873,53 @@ Business Path Platform - Complete Analysis Report
                 Welcome to Your Full Report!
               </h1>
 
-              <p className="text-xl md:text-2xl text-blue-100 mb-16 leading-relaxed">
+              <p className="text-xl md:text-2xl text-blue-100 mb-12 leading-relaxed">
                 Your personalized business blueprint is ready. Discover your
                 AI-powered analysis, personality insights, and complete roadmap
                 to success.
               </p>
+
+              {/* Scroll Down Arrow */}
+              <motion.button
+                onClick={() => {
+                  const analysisSection = document.querySelector(
+                    '[data-section="ai-analysis"]',
+                  );
+                  if (analysisSection) {
+                    analysisSection.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                  }
+                }}
+                className="group inline-flex flex-col items-center space-y-2 hover:scale-110 transition-all duration-300 cursor-pointer"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                whileHover={{ y: -5 }}
+                aria-label="Scroll to AI Analysis section"
+              >
+                <span className="text-blue-100 text-sm font-medium group-hover:text-white transition-colors">
+                  View Your Analysis
+                </span>
+                <motion.div
+                  className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center group-hover:bg-white/30 transition-colors"
+                  animate={{ y: [0, 5, 0] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <ArrowDown className="h-5 w-5 text-white" />
+                </motion.div>
+              </motion.button>
             </motion.div>
           </div>
         </section>
 
         {/* AI Report Section */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-white" data-section="ai-analysis">
           <div className="max-w-6xl mx-auto px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
