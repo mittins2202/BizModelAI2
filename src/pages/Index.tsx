@@ -255,6 +255,81 @@ function Index() {
           </Link>
         </div>
       </section>
+
+      {/* Elegant Divider Section */}
+      <section className="py-16 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0">
+          {/* Subtle animated background pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse delay-1000"></div>
+          </div>
+          
+          {/* Geometric pattern overlay */}
+          <div className="absolute inset-0" style={{
+            backgroundImage: `radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px'
+          }}></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Central divider with decorative elements */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+            className="flex items-center justify-center"
+          >
+            <div className="flex items-center space-x-8">
+              {/* Left decorative line */}
+              <div className="hidden md:block w-32 h-px bg-gradient-to-r from-transparent via-blue-400 to-purple-400"></div>
+              
+              {/* Central icon with glow effect */}
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-xl opacity-50 animate-pulse"></div>
+                <div className="relative w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-2xl">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+              </div>
+              
+              {/* Right decorative line */}
+              <div className="hidden md:block w-32 h-px bg-gradient-to-l from-transparent via-purple-400 to-blue-400"></div>
+            </div>
+          </motion.div>
+
+          {/* Decorative dots */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex justify-center mt-8 space-x-2"
+          >
+            {[...Array(5)].map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                transition={{ duration: 0.3, delay: 0.5 + i * 0.1 }}
+                className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-60"
+              />
+            ))}
+          </motion.div>
+
+          {/* Subtle quote or tagline */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="text-center mt-8"
+          >
+            <p className="text-slate-400 text-sm font-medium italic">
+              "Every successful entrepreneur started with a single step forward"
+            </p>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }
