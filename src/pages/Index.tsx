@@ -282,6 +282,14 @@ function Index() {
           </motion.div>
         </div>
       </section>
+
+      {/* Ombre Transition Section */}
+      <section className="py-8 bg-gradient-to-b from-slate-900 via-slate-800 to-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Subtle gradient overlay for smooth transition */}
+          <div className="h-16 bg-gradient-to-b from-transparent via-gray-900/50 to-gray-900"></div>
+        </div>
+      </section>
     </div>
   );
 }
