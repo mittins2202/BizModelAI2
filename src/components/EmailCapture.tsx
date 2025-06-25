@@ -297,12 +297,6 @@ const EmailCapture: React.FC<EmailCaptureProps> = ({
                   Return to Quiz
                 </button>
               )}
-              <button
-                onClick={handleGuestContinue}
-                className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition-all duration-300"
-              >
-                Skip Email & Continue
-              </button>
             </motion.div>
           </div>
         </motion.div>
