@@ -21,6 +21,7 @@ import Quiz from "./components/Quiz";
 import Results from "./components/Results";
 import EmailCapture from "./components/EmailCapture";
 import BusinessModelDetail from "./components/BusinessModelDetail";
+import BusinessGuide from "./components/BusinessGuide";
 import { QuizData } from "./types";
 
 function App() {
@@ -219,6 +220,12 @@ function App() {
             <Route
               path="/business/:businessId"
               element={<BusinessModelDetail quizData={quizData} />}
+            />
+
+            {/* Business Guide Page */}
+            <Route
+              path="/guide/:businessId"
+              element={<BusinessGuide quizData={quizData} />}
             />
           </Routes>
         </Router>
