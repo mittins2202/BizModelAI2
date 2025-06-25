@@ -23,7 +23,14 @@ import {
   BookOpen,
   Monitor,
   Heart,
-  Briefcase
+  Briefcase,
+  X,
+  ThumbsDown,
+  Eye,
+  TrendingDown,
+  MapPin,
+  Globe,
+  Smartphone
 } from 'lucide-react';
 import { QuizData, BusinessPath } from '../types';
 import { generatePersonalizedPaths } from '../utils/quizLogic';
@@ -47,12 +54,16 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
     { id: 'personality-profile', label: 'Your Personality Profile', icon: Brain },
     { id: 'top-matches', label: 'Your Top 3 Matches', icon: Target },
     { id: 'detailed-analysis', label: 'Detailed AI Analysis', icon: Lightbulb },
+    { id: 'business-environment', label: 'Business Environment Analysis', icon: Globe },
+    { id: 'avoid-models', label: 'Business Models to Avoid', icon: X },
     { id: 'strengths-challenges', label: 'Strengths & Challenges', icon: Award },
     { id: 'income-projections', label: 'Income Projections', icon: TrendingUp },
     { id: 'risk-assessment', label: 'Risk Assessment', icon: Shield },
+    { id: 'market-trends', label: 'Market Trends & Opportunities', icon: TrendingUp },
     { id: 'action-plan', label: 'Personalized Action Plan', icon: Calendar },
     { id: 'resources', label: 'Resources & Tools', icon: BookOpen },
     { id: 'success-metrics', label: 'Success Metrics', icon: BarChart3 },
+    { id: 'competitive-analysis', label: 'Competitive Landscape', icon: Eye },
     { id: 'next-steps', label: 'Next Steps', icon: Zap }
   ];
 
@@ -131,6 +142,7 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
   }, []);
 
   const topThreePaths = personalizedPaths.slice(0, 3);
+  const bottomPaths = personalizedPaths.slice(-3).reverse(); // Get the 3 worst matches
 
   // Helper function to get personality insights
   const getPersonalityInsights = () => {
@@ -159,6 +171,65 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
     }
     
     return insights;
+  };
+
+  // Helper function to get business environment factors
+  const getBusinessEnvironmentFactors = () => {
+    const factors = [];
+    
+    // Time availability analysis
+    if (quizData.weeklyTimeCommitment <= 10) {
+      factors.push({
+        category: "Time Constraints",
+        factor: "Limited Time Availability",
+        description: `With ${quizData.weeklyTimeCommitment} hours/week, you need business models with flexible schedules and minimal time requirements.`,
+        impact: "High",
+        recommendation: "Focus on passive income models or highly efficient active models."
+      });
+    } else if (quizData.weeklyTimeCommitment >= 30) {
+      factors.push({
+        category: "Time Advantage",
+        factor: "High Time Availability",
+        description: `Your ${quizData.weeklyTimeCommitment} hours/week commitment allows for intensive business models with faster growth potential.`,
+        impact: "High",
+        recommendation: "Consider high-growth models that require significant time investment."
+      });
+    }
+
+    // Budget analysis
+    if (quizData.upfrontInvestment <= 500) {
+      factors.push({
+        category: "Financial Constraints",
+        factor: "Limited Startup Capital",
+        description: `Your $${quizData.upfrontInvestment} budget requires low-cost or free business models.`,
+        impact: "Medium",
+        recommendation: "Focus on service-based or digital business models with minimal upfront costs."
+      });
+    }
+
+    // Tech comfort analysis
+    if (quizData.techSkillsRating <= 2) {
+      factors.push({
+        category: "Technical Limitations",
+        factor: "Low Tech Comfort",
+        description: "Your tech comfort level may limit certain digital business opportunities.",
+        impact: "Medium",
+        recommendation: "Start with simple tools and gradually build technical skills, or focus on low-tech business models."
+      });
+    }
+
+    // Communication preferences
+    if (quizData.directCommunicationEnjoyment <= 2) {
+      factors.push({
+        category: "Communication Style",
+        factor: "Prefers Minimal Interaction",
+        description: "You prefer business models with limited direct customer interaction.",
+        impact: "Medium",
+        recommendation: "Focus on behind-the-scenes or automated business models."
+      });
+    }
+
+    return factors;
   };
 
   return (
@@ -257,6 +328,30 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
                   </p>
                 </div>
               )}
+
+              {/* Key Insights Summary */}
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <h3 className="font-semibold text-blue-900 mb-2">Best Fit Characteristics</h3>
+                  <ul className="text-sm text-blue-800 space-y-1">
+                    <li>• {quizData.riskComfortLevel >= 4 ? 'High risk tolerance' : 'Conservative approach'}</li>
+                    <li>• {quizData.weeklyTimeCommitment} hours/week availability</li>
+                    <li>• ${quizData.upfrontInvestment} startup budget</li>
+                    <li>• {quizData.learningPreference?.replace('-', ' ')} learning style</li>
+                  </ul>
+                </div>
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                  <h3 className="font-semibold text-green-900 mb-2">Success Probability</h3>
+                  <div className="text-2xl font-bold text-green-700 mb-1">
+                    {topThreePaths[0]?.fitScore >= 80 ? 'Very High' : 
+                     topThreePaths[0]?.fitScore >= 60 ? 'High' : 
+                     topThreePaths[0]?.fitScore >= 40 ? 'Moderate' : 'Low'}
+                  </div>
+                  <p className="text-sm text-green-800">
+                    Based on {topThreePaths[0]?.fitScore}% match with top recommendation
+                  </p>
+                </div>
+              </div>
             </section>
 
             {/* Personality Profile */}
@@ -432,6 +527,103 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
               )}
             </section>
 
+            {/* Business Environment Analysis */}
+            <section id="business-environment" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <div className="flex items-center mb-6">
+                <Globe className="h-6 w-6 text-blue-600 mr-3" />
+                <h2 className="text-2xl font-bold text-gray-900">Business Environment Analysis</h2>
+              </div>
+              
+              <div className="space-y-6">
+                {getBusinessEnvironmentFactors().map((factor, index) => (
+                  <div key={index} className="border border-gray-200 rounded-lg p-6">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900">{factor.factor}</h3>
+                        <span className="text-sm text-blue-600 font-medium">{factor.category}</span>
+                      </div>
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        factor.impact === 'High' ? 'bg-red-100 text-red-800' :
+                        factor.impact === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-green-100 text-green-800'
+                      }`}>
+                        {factor.impact} Impact
+                      </span>
+                    </div>
+                    <p className="text-gray-700 mb-3">{factor.description}</p>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                      <span className="text-blue-900 font-medium">Recommendation: </span>
+                      <span className="text-blue-800">{factor.recommendation}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Business Models to Avoid */}
+            <section id="avoid-models" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <div className="flex items-center mb-6">
+                <X className="h-6 w-6 text-red-600 mr-3" />
+                <h2 className="text-2xl font-bold text-gray-900">Business Models to Avoid</h2>
+              </div>
+              
+              <div className="mb-6">
+                <p className="text-gray-700 leading-relaxed">
+                  Based on your personality profile and preferences, these business models are likely to be poor fits. 
+                  Understanding what to avoid is just as important as knowing what to pursue.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {bottomPaths.map((path, index) => (
+                  <div key={index} className="border border-red-200 bg-red-50 rounded-lg p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                          <ThumbsDown className="h-4 w-4 text-red-600" />
+                        </div>
+                        <h3 className="text-xl font-bold text-gray-900">{path.name}</h3>
+                      </div>
+                      <div className="text-2xl font-bold text-red-600">{path.fitScore}%</div>
+                    </div>
+                    
+                    <p className="text-gray-700 mb-4">{path.description}</p>
+                    
+                    <div className="bg-red-100 border border-red-200 rounded-lg p-4">
+                      <h4 className="font-semibold text-red-900 mb-2">Why This Doesn't Fit You:</h4>
+                      <ul className="text-red-800 text-sm space-y-1">
+                        {path.fitScore <= 30 && quizData.riskComfortLevel <= 2 && (
+                          <li>• Requires higher risk tolerance than your comfort level</li>
+                        )}
+                        {path.fitScore <= 30 && quizData.techSkillsRating <= 2 && path.name.toLowerCase().includes('app') && (
+                          <li>• Demands advanced technical skills you don't currently possess</li>
+                        )}
+                        {path.fitScore <= 30 && quizData.directCommunicationEnjoyment <= 2 && path.name.toLowerCase().includes('sales') && (
+                          <li>• Requires extensive client interaction which doesn't match your preferences</li>
+                        )}
+                        {path.fitScore <= 30 && quizData.weeklyTimeCommitment <= 10 && (
+                          <li>• Needs more time commitment than you have available</li>
+                        )}
+                        {path.fitScore <= 30 && quizData.upfrontInvestment <= 500 && path.startupCost.includes('$1,000+') && (
+                          <li>• Startup costs exceed your available budget</li>
+                        )}
+                        <li>• Overall compatibility score of {path.fitScore}% indicates poor alignment with your profile</li>
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <h3 className="font-semibold text-yellow-900 mb-2">Important Note</h3>
+                <p className="text-yellow-800 text-sm">
+                  While these models scored low for your current profile, this doesn't mean they're inherently bad businesses. 
+                  They simply don't align well with your current skills, preferences, and circumstances. As you grow and develop, 
+                  some of these might become viable options in the future.
+                </p>
+              </div>
+            </section>
+
             {/* Strengths & Challenges */}
             <section id="strengths-challenges" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
               <div className="flex items-center mb-6">
@@ -550,6 +742,52 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
                     <div className="flex items-center">
                       <div className={`w-3 h-3 rounded-full mr-3 ${quizData.techSkillsRating >= 4 ? 'bg-green-500' : quizData.techSkillsRating >= 3 ? 'bg-yellow-500' : 'bg-red-500'}`}></div>
                       <span className="text-gray-700">Tech Skills: {quizData.techSkillsRating}/5</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Market Trends & Opportunities */}
+            <section id="market-trends" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <div className="flex items-center mb-6">
+                <TrendingUp className="h-6 w-6 text-green-600 mr-3" />
+                <h2 className="text-2xl font-bold text-gray-900">Market Trends & Opportunities</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Growing Markets</h3>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                      <h4 className="font-medium text-green-900">AI & Automation Services</h4>
+                      <p className="text-sm text-green-800 mt-1">Growing 40% annually as businesses seek efficiency</p>
+                    </div>
+                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                      <h4 className="font-medium text-blue-900">Remote Work Solutions</h4>
+                      <p className="text-sm text-blue-800 mt-1">Permanent shift to hybrid work creates ongoing demand</p>
+                    </div>
+                    <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                      <h4 className="font-medium text-purple-900">Digital Health & Wellness</h4>
+                      <p className="text-sm text-purple-800 mt-1">$350B market with 25% annual growth</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Emerging Opportunities</h3>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <h4 className="font-medium text-yellow-900">Sustainability Consulting</h4>
+                      <p className="text-sm text-yellow-800 mt-1">ESG requirements driving business demand</p>
+                    </div>
+                    <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-lg">
+                      <h4 className="font-medium text-indigo-900">Creator Economy Tools</h4>
+                      <p className="text-sm text-indigo-800 mt-1">$104B market with infrastructure gaps</p>
+                    </div>
+                    <div className="p-4 bg-pink-50 border border-pink-200 rounded-lg">
+                      <h4 className="font-medium text-pink-900">Senior Care Services</h4>
+                      <p className="text-sm text-pink-800 mt-1">Aging population creates massive opportunity</p>
                     </div>
                   </div>
                 </div>
@@ -685,6 +923,73 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
                         <div className="font-medium text-gray-900">Day 180</div>
                         <div className="text-sm text-gray-600">Systems optimized for growth</div>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Competitive Analysis */}
+            <section id="competitive-analysis" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <div className="flex items-center mb-6">
+                <Eye className="h-6 w-6 text-indigo-600 mr-3" />
+                <h2 className="text-2xl font-bold text-gray-900">Competitive Landscape</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Competitive Advantages</h3>
+                  <div className="space-y-3">
+                    {quizData.selfMotivationLevel >= 4 && (
+                      <div className="flex items-start p-3 bg-green-50 rounded-lg">
+                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-1" />
+                        <div>
+                          <div className="font-medium text-green-900">High Self-Motivation</div>
+                          <div className="text-sm text-green-800">You'll outwork competitors who lack discipline</div>
+                        </div>
+                      </div>
+                    )}
+                    {quizData.techSkillsRating >= 4 && (
+                      <div className="flex items-start p-3 bg-blue-50 rounded-lg">
+                        <CheckCircle className="h-4 w-4 text-blue-500 mr-2 mt-1" />
+                        <div>
+                          <div className="font-medium text-blue-900">Technical Proficiency</div>
+                          <div className="text-sm text-blue-800">Advantage in digital business models</div>
+                        </div>
+                      </div>
+                    )}
+                    {quizData.directCommunicationEnjoyment >= 4 && (
+                      <div className="flex items-start p-3 bg-purple-50 rounded-lg">
+                        <CheckCircle className="h-4 w-4 text-purple-500 mr-2 mt-1" />
+                        <div>
+                          <div className="font-medium text-purple-900">Strong Communication</div>
+                          <div className="text-sm text-purple-800">Better client relationships and sales</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Market Positioning Strategy</h3>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <h4 className="font-medium text-gray-900">Differentiation Focus</h4>
+                      <p className="text-sm text-gray-700 mt-1">
+                        Leverage your {quizData.creativeWorkEnjoyment >= 4 ? 'creativity' : 'systematic approach'} to stand out from generic competitors
+                      </p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <h4 className="font-medium text-gray-900">Target Market</h4>
+                      <p className="text-sm text-gray-700 mt-1">
+                        Focus on {quizData.meaningfulContributionImportance >= 4 ? 'purpose-driven clients who value impact' : 'efficiency-focused clients who want results'}
+                      </p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <h4 className="font-medium text-gray-900">Pricing Strategy</h4>
+                      <p className="text-sm text-gray-700 mt-1">
+                        {quizData.riskComfortLevel >= 4 ? 'Premium pricing based on unique value proposition' : 'Competitive pricing with superior service quality'}
+                      </p>
                     </div>
                   </div>
                 </div>
