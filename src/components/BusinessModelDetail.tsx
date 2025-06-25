@@ -19,7 +19,10 @@ import {
   Zap,
   BookOpen,
   Monitor,
-  MessageCircle
+  MessageCircle,
+  Shield,
+  Briefcase,
+  Heart
 } from 'lucide-react';
 import { QuizData, BusinessPath } from '../types';
 import { businessPaths } from '../data/businessPaths';
@@ -48,11 +51,12 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
   const sidebarItems = [
     { id: 'overview', label: 'Business Overview', icon: BarChart3 },
     { id: 'fit-analysis', label: 'Why This Fits You', icon: Target },
+    { id: 'income-potential', label: 'Income Potential', icon: TrendingUp },
     { id: 'getting-started', label: 'Getting Started', icon: Zap },
-    { id: 'income-timeline', label: 'Income & Timeline', icon: TrendingUp },
     { id: 'skills-tools', label: 'Skills & Tools', icon: Monitor },
     { id: 'pros-cons', label: 'Pros & Challenges', icon: Award },
     { id: 'success-strategies', label: 'Success Strategies', icon: Brain },
+    { id: 'market-analysis', label: 'Market Analysis', icon: BarChart3 },
     { id: 'action-plan', label: 'Action Plan', icon: Calendar },
     { id: 'resources', label: 'Resources', icon: BookOpen },
     { id: 'community', label: 'Community & Support', icon: Users }
@@ -320,6 +324,68 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
               </section>
             )}
 
+            {/* Income Potential */}
+            <section id="income-potential" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <div className="flex items-center mb-6">
+                <TrendingUp className="h-6 w-6 text-green-600 mr-3" />
+                <h2 className="text-2xl font-bold text-gray-900">Income Potential & Timeline</h2>
+              </div>
+              
+              {business.averageIncome && (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                    <div className="text-xl font-bold text-gray-900 mb-1">{business.averageIncome.beginner}</div>
+                    <div className="text-sm text-gray-600">Beginner (0-6 months)</div>
+                  </div>
+                  <div className="text-center p-4 bg-blue-50 rounded-lg">
+                    <div className="text-xl font-bold text-blue-600 mb-1">{business.averageIncome.intermediate}</div>
+                    <div className="text-sm text-gray-600">Intermediate (6-18 months)</div>
+                  </div>
+                  <div className="text-center p-4 bg-green-50 rounded-lg">
+                    <div className="text-xl font-bold text-green-600 mb-1">{business.averageIncome.advanced}</div>
+                    <div className="text-sm text-gray-600">Advanced (18+ months)</div>
+                  </div>
+                </div>
+              )}
+
+              {/* Income Growth Chart Visualization */}
+              <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-xl p-6 mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Projected Income Growth</h3>
+                <div className="relative">
+                  <div className="flex items-end justify-between h-32 mb-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 bg-gray-400 rounded-t" style={{ height: '20%' }}></div>
+                      <span className="text-xs text-gray-600 mt-2">Month 1-3</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 bg-blue-400 rounded-t" style={{ height: '40%' }}></div>
+                      <span className="text-xs text-gray-600 mt-2">Month 4-6</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 bg-blue-500 rounded-t" style={{ height: '60%' }}></div>
+                      <span className="text-xs text-gray-600 mt-2">Month 7-12</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 bg-green-500 rounded-t" style={{ height: '80%' }}></div>
+                      <span className="text-xs text-gray-600 mt-2">Year 2</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 bg-green-600 rounded-t" style={{ height: '100%' }}></div>
+                      <span className="text-xs text-gray-600 mt-2">Year 3+</span>
+                    </div>
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    * Income projections based on typical performance with {quizData?.weeklyTimeCommitment || 20} hours/week commitment
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="font-semibold text-blue-900 mb-2">Market Size & Opportunity</h3>
+                <p className="text-blue-800">{business.marketSize}</p>
+              </div>
+            </section>
+
             {/* Getting Started */}
             <section id="getting-started" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
               <div className="flex items-center mb-6">
@@ -351,36 +417,40 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                     <p className="text-sm text-gray-600">Start small and iterate based on feedback</p>
                   </div>
                 </div>
-              </div>
-            </section>
 
-            {/* Income & Timeline */}
-            <section id="income-timeline" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
-              <div className="flex items-center mb-6">
-                <TrendingUp className="h-6 w-6 text-green-600 mr-3" />
-                <h2 className="text-2xl font-bold text-gray-900">Income Potential & Timeline</h2>
-              </div>
-              
-              {business.averageIncome && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="text-xl font-bold text-gray-900 mb-1">{business.averageIncome.beginner}</div>
-                    <div className="text-sm text-gray-600">Beginner (0-6 months)</div>
-                  </div>
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <div className="text-xl font-bold text-blue-600 mb-1">{business.averageIncome.intermediate}</div>
-                    <div className="text-sm text-gray-600">Intermediate (6-18 months)</div>
-                  </div>
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <div className="text-xl font-bold text-green-600 mb-1">{business.averageIncome.advanced}</div>
-                    <div className="text-sm text-gray-600">Advanced (18+ months)</div>
-                  </div>
+                {/* First Week Action Items */}
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                  <h3 className="font-semibold text-yellow-900 mb-3">Your First Week Action Items</h3>
+                  <ul className="space-y-2">
+                    {business.actionPlan?.phase1?.slice(0, 4).map((action: string, index: number) => (
+                      <li key={index} className="flex items-start">
+                        <div className="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                          <span className="text-white text-xs font-bold">{index + 1}</span>
+                        </div>
+                        <span className="text-yellow-800">{action}</span>
+                      </li>
+                    )) || [
+                      <li key={0} className="flex items-start">
+                        <div className="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                          <span className="text-white text-xs font-bold">1</span>
+                        </div>
+                        <span className="text-yellow-800">Research successful examples in your chosen niche</span>
+                      </li>,
+                      <li key={1} className="flex items-start">
+                        <div className="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                          <span className="text-white text-xs font-bold">2</span>
+                        </div>
+                        <span className="text-yellow-800">Set up your workspace and essential tools</span>
+                      </li>,
+                      <li key={2} className="flex items-start">
+                        <div className="w-5 h-5 bg-yellow-500 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                          <span className="text-white text-xs font-bold">3</span>
+                        </div>
+                        <span className="text-yellow-800">Define your target audience and value proposition</span>
+                      </li>
+                    ]}
+                  </ul>
                 </div>
-              )}
-
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <h3 className="font-semibold text-blue-900 mb-2">Market Size</h3>
-                <p className="text-blue-800">{business.marketSize}</p>
               </div>
             </section>
 
@@ -401,6 +471,38 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                       </span>
                     ))}
                   </div>
+                  
+                  {quizData && (
+                    <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                      <h4 className="font-semibold text-green-900 mb-2">Your Skill Match</h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-green-700">Tech Skills</span>
+                          <div className="flex items-center">
+                            <div className="w-16 bg-green-200 rounded-full h-2 mr-2">
+                              <div 
+                                className="bg-green-600 h-2 rounded-full" 
+                                style={{ width: `${(quizData.techSkillsRating / 5) * 100}%` }}
+                              ></div>
+                            </div>
+                            <span className="text-sm font-medium text-green-800">{quizData.techSkillsRating}/5</span>
+                          </div>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-green-700">Communication</span>
+                          <div className="flex items-center">
+                            <div className="w-16 bg-green-200 rounded-full h-2 mr-2">
+                              <div 
+                                className="bg-green-600 h-2 rounded-full" 
+                                style={{ width: `${(quizData.directCommunicationEnjoyment / 5) * 100}%` }}
+                              ></div>
+                            </div>
+                            <span className="text-sm font-medium text-green-800">{quizData.directCommunicationEnjoyment}/5</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 <div>
@@ -492,6 +594,59 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 </div>
               </section>
             )}
+
+            {/* Market Analysis */}
+            <section id="market-analysis" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+              <div className="flex items-center mb-6">
+                <BarChart3 className="h-6 w-6 text-blue-600 mr-3" />
+                <h2 className="text-2xl font-bold text-gray-900">Market Analysis</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Market Opportunity</h3>
+                  <div className="space-y-4">
+                    <div className="p-4 bg-blue-50 rounded-lg">
+                      <div className="font-medium text-blue-900">Market Size</div>
+                      <div className="text-blue-800">{business.marketSize}</div>
+                    </div>
+                    <div className="p-4 bg-green-50 rounded-lg">
+                      <div className="font-medium text-green-900">Growth Rate</div>
+                      <div className="text-green-800">Growing 15-25% annually</div>
+                    </div>
+                    <div className="p-4 bg-purple-50 rounded-lg">
+                      <div className="font-medium text-purple-900">Competition Level</div>
+                      <div className="text-purple-800">{business.difficulty === 'Easy' ? 'Moderate' : business.difficulty === 'Medium' ? 'High' : 'Very High'}</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Success Factors</h3>
+                  <div className="space-y-3">
+                    {business.bestFitPersonality?.map((trait: string, index: number) => (
+                      <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <CheckCircle className="h-4 w-4 text-green-500 mr-3" />
+                        <span className="text-gray-700">{trait}</span>
+                      </div>
+                    )) || [
+                      <div key={0} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <CheckCircle className="h-4 w-4 text-green-500 mr-3" />
+                        <span className="text-gray-700">Strong work ethic and consistency</span>
+                      </div>,
+                      <div key={1} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <CheckCircle className="h-4 w-4 text-green-500 mr-3" />
+                        <span className="text-gray-700">Willingness to learn and adapt</span>
+                      </div>,
+                      <div key={2} className="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <CheckCircle className="h-4 w-4 text-green-500 mr-3" />
+                        <span className="text-gray-700">Customer-focused mindset</span>
+                      </div>
+                    ]}
+                  </div>
+                </div>
+              </div>
+            </section>
 
             {/* Action Plan */}
             <section id="action-plan" className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
