@@ -19,9 +19,7 @@ import {
   Clock,
   DollarSign,
   Shield,
-  ExternalLink,
-  Menu,
-  X
+  ExternalLink
 } from 'lucide-react';
 import { QuizData, BusinessPath } from '../types';
 import { generatePersonalizedPaths } from '../utils/quizLogic';
@@ -39,7 +37,6 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
   const [aiInsights, setAiInsights] = useState<any>(null);
   const [isLoadingInsights, setIsLoadingInsights] = useState(true);
   const [activeSection, setActiveSection] = useState('overview');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   // Sidebar navigation items
@@ -107,7 +104,6 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
   // Handle scroll to section
   const scrollToSection = (sectionId: string) => {
     setActiveSection(sectionId);
-    setSidebarOpen(false); // Close sidebar on mobile after selection
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -132,22 +128,6 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Close sidebar when clicking outside on mobile
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const sidebar = document.getElementById('sidebar');
-      const menuButton = document.getElementById('menu-button');
-      
-      if (sidebarOpen && sidebar && !sidebar.contains(event.target as Node) && 
-          menuButton && !menuButton.contains(event.target as Node)) {
-        setSidebarOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [sidebarOpen]);
 
   const topThreePaths = personalizedPaths.slice(0, 3);
   const worstThreePaths = personalizedPaths.slice(-3).reverse(); // Get worst 3 and reverse for worst-first order
@@ -180,24 +160,11 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
           </div>
           
           <div className="flex items-center space-x-4">
-            {/* Mobile Menu Button */}
-            <button
-              id="menu-button"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 rounded-lg bg-white shadow-md hover:bg-gray-50 transition-colors"
-            >
-              {sidebarOpen ? (
-                <X className="h-6 w-6 text-gray-600" />
-              ) : (
-                <Menu className="h-6 w-6 text-gray-600" />
-              )}
-            </button>
-            
-            <button className="hidden sm:flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
               <Download className="h-4 w-4 mr-2" />
               Download PDF
             </button>
-            <button className="hidden sm:flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="flex items-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
               <Share2 className="h-4 w-4 mr-2" />
               Share
             </button>
@@ -207,8 +174,7 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
-            {/* Desktop Sidebar */}
-            <div className="hidden lg:block sticky top-8">
+            <div className="sticky top-8">
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Report Sections</h3>
                 <nav className="space-y-2">
@@ -229,61 +195,6 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
                 </nav>
               </div>
             </div>
-
-            {/* Mobile Sidebar Overlay */}
-            <AnimatePresence>
-              {sidebarOpen && (
-                <>
-                  {/* Backdrop */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
-                    onClick={() => setSidebarOpen(false)}
-                  />
-                  
-                  {/* Sidebar */}
-                  <motion.div
-                    id="sidebar"
-                    initial={{ x: -300, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: -300, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: 'easeInOut' }}
-                    className="lg:hidden fixed left-0 top-0 h-full w-80 bg-white shadow-2xl z-50 overflow-y-auto"
-                  >
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-lg font-semibold text-gray-900">Report Sections</h3>
-                        <button
-                          onClick={() => setSidebarOpen(false)}
-                          className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                        >
-                          <X className="h-5 w-5 text-gray-500" />
-                        </button>
-                      </div>
-                      
-                      <nav className="space-y-2">
-                        {sidebarItems.map((item) => (
-                          <button
-                            key={item.id}
-                            onClick={() => scrollToSection(item.id)}
-                            className={`w-full flex items-center px-3 py-3 text-left rounded-lg transition-colors ${
-                              activeSection === item.id
-                                ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
-                                : 'text-gray-700 hover:bg-gray-50'
-                            }`}
-                          >
-                            <item.icon className="h-5 w-5 mr-3 flex-shrink-0" />
-                            <span className="font-medium">{item.label}</span>
-                          </button>
-                        ))}
-                      </nav>
-                    </div>
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
           </div>
 
           {/* Main Content */}
@@ -514,7 +425,7 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                 <p className="text-red-800 text-sm">
                   <strong>Important Note:</strong> These business models scored lowest for your current profile. 
-                  This doesn't mean they're bad businesses—they just don't align well with your current goals, skills, or preferences. 
+                  This doesn't mean they\'re bad businesses—they just don't align well with your current goals, skills, or preferences. 
                   As you grow and develop, some of these might become viable options in the future.
                 </p>
               </div>
@@ -557,8 +468,7 @@ const FullReport: React.FC<FullReportProps> = ({ quizData, onBack, userEmail }) 
                         {path.id === 'high-ticket-sales' && quizData.directCommunicationEnjoyment < 4 && (
                           <li>• Requires high comfort with direct communication (your level: {quizData.directCommunicationEnjoyment}/5)</li>
                         )}
-                        {path.id ===
-                          'content-creation-ugc' && quizData.brandFaceComfort < 3 && (
+                        {path.id === 'content-creation-ugc' && quizData.brandFaceComfort < 3 && (
                           <li>• Requires comfort being the face of a brand (your comfort level: {quizData.brandFaceComfort}/5)</li>
                         )}
                       </ul>
