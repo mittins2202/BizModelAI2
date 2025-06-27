@@ -86,7 +86,6 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
   title,
 }) => {
   const [showConfetti, setShowConfetti] = useState(false);
-  const [isUnlocking, setIsUnlocking] = useState(false);
 
   if (!isOpen) return null;
 
@@ -167,9 +166,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
 
   const content = getContent();
 
-  const handleUnlock = async () => {
-    setIsUnlocking(true);
-    
+  const handleUnlock = () => {
     // Show confetti immediately for payment types
     if (type !== "quiz-required") {
       setShowConfetti(true);
@@ -180,11 +177,8 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
       }, 4000);
     }
     
-    // Simulate processing time
-    setTimeout(() => {
-      setIsUnlocking(false);
-      onUnlock();
-    }, 1500);
+    // Call onUnlock immediately - no processing delay
+    onUnlock();
   };
 
   return (
@@ -281,25 +275,16 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
               {/* Primary Button */}
               <button
                 onClick={handleUnlock}
-                disabled={isUnlocking}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
               >
-                {isUnlocking ? (
-                  <div className="flex items-center justify-center">
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    {type === "quiz-required" ? "Loading Quiz..." : "Processing..."}
-                  </div>
-                ) : (
-                  content.buttonText
-                )}
+                {content.buttonText}
               </button>
 
               {/* Secondary Button (for learn-more type) */}
               {content.secondaryButton && (
                 <button
                   onClick={onClose}
-                  disabled={isUnlocking}
-                  className="w-full border-2 border-gray-300 text-gray-600 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 disabled:opacity-50"
+                  className="w-full border-2 border-gray-300 text-gray-600 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-300"
                 >
                   {content.secondaryButton}
                 </button>
