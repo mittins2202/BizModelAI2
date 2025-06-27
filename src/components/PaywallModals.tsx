@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
@@ -10,6 +10,65 @@ import {
   Brain,
   CheckCircle,
 } from "lucide-react";
+
+// Confetti component
+const Confetti: React.FC = () => {
+  const [confettiPieces, setConfettiPieces] = useState<
+    Array<{
+      id: number;
+      x: number;
+      y: number;
+      rotation: number;
+      color: string;
+      delay: number;
+    }>
+  >([]);
+
+  useEffect(() => {
+    // Generate confetti pieces
+    const pieces = Array.from({ length: 50 }, (_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: -10,
+      rotation: Math.random() * 360,
+      color: ["#3b82f6", "#8b5cf6", "#06d6a0", "#f59e0b", "#ef4444", "#ec4899"][
+        Math.floor(Math.random() * 6)
+      ],
+      delay: Math.random() * 3,
+    }));
+    setConfettiPieces(pieces);
+  }, []);
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-50 overflow-hidden">
+      {confettiPieces.map((piece) => (
+        <motion.div
+          key={piece.id}
+          className="absolute w-3 h-3 rounded-sm"
+          style={{
+            backgroundColor: piece.color,
+            left: `${piece.x}%`,
+          }}
+          initial={{
+            y: -20,
+            rotation: piece.rotation,
+            opacity: 1,
+          }}
+          animate={{
+            y: window.innerHeight + 20,
+            rotation: piece.rotation + 720,
+            opacity: 0,
+          }}
+          transition={{
+            duration: 3 + Math.random() * 2,
+            delay: piece.delay,
+            ease: "easeOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -26,6 +85,9 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
   type,
   title,
 }) => {
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [isUnlocking, setIsUnlocking] = useState(false);
+
   if (!isOpen) return null;
 
   const getContent = () => {
@@ -105,13 +167,36 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
 
   const content = getContent();
 
+  const handleUnlock = async () => {
+    setIsUnlocking(true);
+    
+    // Show confetti immediately for payment types
+    if (type !== "quiz-required") {
+      setShowConfetti(true);
+      
+      // Hide confetti after 4 seconds
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 4000);
+    }
+    
+    // Simulate processing time
+    setTimeout(() => {
+      setIsUnlocking(false);
+      onUnlock();
+    }, 1500);
+  };
+
   return (
     <AnimatePresence>
+      {/* Confetti Animation - Only show for payment unlocks */}
+      {showConfetti && <Confetti />}
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-40"
         onClick={onClose}
       >
         <motion.div
@@ -195,17 +280,26 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({
             >
               {/* Primary Button */}
               <button
-                onClick={onUnlock}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg"
+                onClick={handleUnlock}
+                disabled={isUnlocking}
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-[1.02] shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                {content.buttonText}
+                {isUnlocking ? (
+                  <div className="flex items-center justify-center">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    {type === "quiz-required" ? "Loading Quiz..." : "Processing..."}
+                  </div>
+                ) : (
+                  content.buttonText
+                )}
               </button>
 
               {/* Secondary Button (for learn-more type) */}
               {content.secondaryButton && (
                 <button
                   onClick={onClose}
-                  className="w-full border-2 border-gray-300 text-gray-600 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-300"
+                  disabled={isUnlocking}
+                  className="w-full border-2 border-gray-300 text-gray-600 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 disabled:opacity-50"
                 >
                   {content.secondaryButton}
                 </button>
