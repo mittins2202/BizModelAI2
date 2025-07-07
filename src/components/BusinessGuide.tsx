@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -26,7 +26,8 @@ import {
   Play,
   Download,
   ExternalLink,
-  ChevronUp
+  ChevronUp,
+  ArrowRight
 } from 'lucide-react';
 import { QuizData, BusinessPath } from '../types';
 import { businessPaths } from '../data/businessPaths';
@@ -41,6 +42,7 @@ interface BusinessGuideProps {
 const BusinessGuide: React.FC<BusinessGuideProps> = ({ quizData }) => {
   const { businessId } = useParams<{ businessId: string }>();
   const navigate = useNavigate();
+  const businessOverviewRef = useRef<HTMLDivElement>(null);
   const [businessPath, setBusinessPath] = useState<BusinessPath | null>(null);
   const [businessModel, setBusinessModel] = useState<any>(null);
   const [activeSection, setActiveSection] = useState('overview');
@@ -93,6 +95,14 @@ const BusinessGuide: React.FC<BusinessGuideProps> = ({ quizData }) => {
       behavior: 'smooth'
     });
   };
+
+  const scrollToBusinessOverview = () => {
+    businessOverviewRef.current?.scrollIntoView({ 
+      behavior: 'smooth',
+      block: 'start'
+    });
+  };
+
   useEffect(() => {
     if (!businessId) return;
 
@@ -1022,11 +1032,13 @@ const BusinessGuide: React.FC<BusinessGuideProps> = ({ quizData }) => {
               <div className="text-center">
                 <h3 className="text-xl font-bold text-white mb-4">Ready to Start Your Journey?</h3>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
-                    Start Week 1 Now
-                  </button>
-                  <button className="border border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                    Download Complete Guide
+                  <button
+                    onClick={scrollToBusinessOverview}
+                    className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-green-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center"
+                  >
+                    <Target className="h-5 w-5 mr-2" />
+                    Get Started Now
+                    <ArrowRight className="h-5 w-5 ml-2" />
                   </button>
                 </div>
               </div>
@@ -1034,6 +1046,22 @@ const BusinessGuide: React.FC<BusinessGuideProps> = ({ quizData }) => {
           </div>
         </div>
       </div>
+
+      {/* Business Overview Section */}
+      <section className="py-20 bg-white">
+        <div ref={businessOverviewRef} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              Business Overview
+            </h2>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 };
