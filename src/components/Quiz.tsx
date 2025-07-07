@@ -429,8 +429,16 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
   const handleBackButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("Back button clicked - showing exit modal immediately");
+    console.log("Back button clicked - checking if first round intro page");
 
+    // If we're on the first round intro page, go directly home without exit modal
+    if (showRoundIntro && currentRound === 1 && currentStep === 0) {
+      console.log("On first round intro page - going directly home");
+      onBack();
+      return;
+    }
+
+    console.log("Showing exit modal");
     // Force immediate state update using callback form
     setShowExitModal((prevState) => {
       console.log("Setting exit modal to true, previous state was:", prevState);
