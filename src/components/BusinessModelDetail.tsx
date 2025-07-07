@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { QuizData, BusinessPath } from '../types';
 import { businessModels } from '../data/businessModels';
+import { businessPaths } from '../data/businessPaths';
 import { calculateFitScore } from '../utils/quizLogic';
 import { AIService } from '../utils/aiService';
 import { usePaywall } from '../contexts/PaywallContext';
