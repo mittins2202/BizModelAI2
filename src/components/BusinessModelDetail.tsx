@@ -25,7 +25,8 @@ import {
   Heart
 } from 'lucide-react';
 import { QuizData, BusinessPath } from '../types';
-import { businessPaths } from '../data/businessPaths';
+  ExternalLink,
+  ChevronUp
 import { businessModels } from '../data/businessModels';
 import { calculateFitScore } from '../utils/quizLogic';
 import { AIService } from '../utils/aiService';
@@ -45,6 +46,9 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
   const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(true);
   const [activeSection, setActiveSection] = useState('overview');
   const [showPaywallModal, setShowPaywallModal] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const { hasCompletedQuiz, canAccessBusinessModel, setHasUnlockedAnalysis } = usePaywall();
 
   // Sidebar navigation items
@@ -62,6 +66,35 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
     { id: 'community', label: 'Community & Support', icon: Users }
   ];
 
+  // Handle scroll for header visibility and back-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show/hide header based on scroll direction
+      if (currentScrollY < lastScrollY || currentScrollY < 100) {
+        setHeaderVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setHeaderVisible(false);
+      }
+      
+      // Show back-to-top button after scrolling down 400px
+      setShowBackToTop(currentScrollY > 400);
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
   useEffect(() => {
     if (!businessId) return;
 
@@ -193,18 +226,46 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+      {/* Back to Top Button */}
+      <AnimatePresence>
+        {showBackToTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            onClick={scrollToTop}
+            className="fixed bottom-8 right-8 z-50 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronUp className="h-6 w-6" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          style={{ 
+            position: 'sticky', 
+            top: headerVisible ? '0' : '-100px',
+            zIndex: 40,
+            transition: 'top 0.3s ease-in-out',
+            backgroundColor: 'rgba(248, 250, 252, 0.95)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '0 0 1rem 1rem',
+            marginBottom: '2rem',
+            padding: '1rem 0'
+          }}
           transition={{ duration: 0.6 }}
-          className="flex items-center justify-between mb-8"
+          className="flex items-center justify-between"
         >
           <div className="flex items-center">
             <button
               onClick={() => navigate(-1)}
-              className="mr-4 p-2 rounded-lg hover:bg-white/50 transition-colors"
+              className="mr-4 p-2 rounded-lg hover:bg-white/70 transition-colors"
             >
               <ArrowLeft className="h-6 w-6 text-gray-600" />
             </button>
