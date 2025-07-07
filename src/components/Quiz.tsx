@@ -407,8 +407,8 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
         }, 300);
       }
     } else {
-      // Show exit warning modal instead of immediately going back
-      setShowExitModal(true);
+      // If we're on the first question (step 0), go back to the round intro page
+      setShowRoundIntro(true);
       setIsAnimating(false);
     }
   };
