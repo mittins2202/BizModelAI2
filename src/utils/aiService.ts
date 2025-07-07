@@ -110,12 +110,8 @@ export class AIService {
       // Generate personalized analysis
       const personalizedAnalysis = await this.generatePersonalizedAnalysis(quizData, topPath);
       
-      // Generate comprehensive business model details
-      const businessModelDetails = await this.generateBusinessModelDetails(topPath);
-      
       return {
         ...personalizedAnalysis,
-        aiGeneratedDetails: businessModelDetails
       };
     } catch (error) {
       console.error("Error generating detailed analysis:", error);
@@ -225,90 +221,6 @@ Write in an engaging, personalized tone as if speaking directly to them.
           "Realistic expectations set foundation for sustainable growth",
         ],
       };
-    }
-  }
-
-  private async generateBusinessModelDetails(topPath: BusinessPath): Promise<any> {
-    try {
-      // Only generate AI details for dropshipping initially
-      if (topPath.id !== 'e-commerce-dropshipping') {
-        return null;
-      }
-
-      const prompt = `
-Generate detailed, practical information about dropshipping business models in 2024. Include:
-
-{
-  "marketOverview": {
-    "currentState": "",
-    "trends": [],
-    "opportunities": [],
-    "challenges": []
-  },
-  "gettingStarted": {
-    "essentialSteps": [],
-    "requiredTools": [],
-    "initialInvestment": {
-      "minimum": "",
-      "recommended": "",
-      "breakdown": []
-    }
-  },
-  "successFactors": {
-    "keyStrategies": [],
-    "commonMistakes": [],
-    "competitiveAdvantages": []
-  },
-  "profitabilityAnalysis": {
-    "typicalMargins": "",
-    "breakevenTimeline": "",
-    "scalingFactors": [],
-    "expenseConsiderations": []
-  },
-  "marketingStrategies": {
-    "effectiveChannels": [],
-    "customerAcquisition": [],
-    "brandBuilding": []
-  },
-  "operationalTips": {
-    "supplierRelations": [],
-    "inventoryManagement": [],
-    "customerService": [],
-    "automation": []
-  }
-}
-
-Ensure all information is current, accurate, and professional. Focus on 2024 market conditions and realistic expectations.
-
-Return only the JSON object, no additional text.
-      `;
-
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [{ role: "user", content: prompt }],
-        max_tokens: 1500,
-        temperature: 0.3,
-      });
-
-      const content = response.choices?.[0]?.message?.content;
-      if (!content) {
-        return null;
-      }
-
-      try {
-        // Parse JSON response
-        const jsonMatch = content.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          return JSON.parse(jsonMatch[0]);
-        }
-        return null;
-      } catch (parseError) {
-        console.error("Error parsing AI response JSON:", parseError);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error generating business model details:", error);
-      return null;
     }
   }
 

@@ -225,14 +225,6 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
 
   const business = businessPath || businessModel;
 
-  // Helper function to get AI-generated data or fallback to static data
-  const getBusinessData = (field: string, fallback: any) => {
-    if (aiAnalysis?.aiGeneratedDetails && aiAnalysis.aiGeneratedDetails[field]) {
-      return aiAnalysis.aiGeneratedDetails[field];
-    }
-    return fallback;
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
       {/* Back to Top Button */}
@@ -329,24 +321,24 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
               
               <div className="prose max-w-none mb-8">
                 <p className="text-gray-700 leading-relaxed text-lg">
-                  {getBusinessData('detailedDescription', business.detailedDescription || business.description)}
+                  {business.detailedDescription || business.description}
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center p-4 bg-blue-50 rounded-lg">
                   <Clock className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                  <div className="font-semibold text-gray-900">{getBusinessData('timeToProfit', business.timeToProfit || business.timeToStart)}</div>
+                  <div className="font-semibold text-gray-900">{business.timeToProfit || business.timeToStart}</div>
                   <div className="text-sm text-gray-600">Time to Profit</div>
                 </div>
                 <div className="text-center p-4 bg-green-50 rounded-lg">
                   <DollarSign className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                  <div className="font-semibold text-gray-900">{getBusinessData('startupCost', business.startupCost || business.initialInvestment)}</div>
+                  <div className="font-semibold text-gray-900">{business.startupCost || business.initialInvestment}</div>
                   <div className="text-sm text-gray-600">Startup Cost</div>
                 </div>
                 <div className="text-center p-4 bg-purple-50 rounded-lg">
                   <TrendingUp className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-                  <div className="font-semibold text-gray-900">{getBusinessData('potentialIncome', business.potentialIncome)}</div>
+                  <div className="font-semibold text-gray-900">{business.potentialIncome}</div>
                   <div className="text-sm text-gray-600">Income Potential</div>
                 </div>
               </div>
@@ -401,27 +393,20 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 <h2 className="text-2xl font-bold text-gray-900">Income Potential & Timeline</h2>
               </div>
               
-              {(getBusinessData('averageIncome', business.averageIncome)) && (
+              {business.averageIncome && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  {(() => {
-                    const avgIncome = getBusinessData('averageIncome', business.averageIncome);
-                    return (
-                      <>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                        <div className="text-xl font-bold text-gray-900 mb-1">{avgIncome.beginner}</div>
+                    <div className="text-xl font-bold text-gray-900 mb-1">{business.averageIncome.beginner}</div>
                     <div className="text-sm text-gray-600">Beginner (0-6 months)</div>
                   </div>
                   <div className="text-center p-4 bg-blue-50 rounded-lg">
-                        <div className="text-xl font-bold text-blue-600 mb-1">{avgIncome.intermediate}</div>
+                    <div className="text-xl font-bold text-blue-600 mb-1">{business.averageIncome.intermediate}</div>
                     <div className="text-sm text-gray-600">Intermediate (6-18 months)</div>
                   </div>
                   <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <div className="text-xl font-bold text-green-600 mb-1">{avgIncome.advanced}</div>
+                    <div className="text-xl font-bold text-green-600 mb-1">{business.averageIncome.advanced}</div>
                     <div className="text-sm text-gray-600">Advanced (18+ months)</div>
                   </div>
-                      </>
-                    );
-                  })()}
                 </div>
               )}
 
@@ -459,7 +444,7 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
 
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <h3 className="font-semibold text-blue-900 mb-2">Market Size & Opportunity</h3>
-                <p className="text-blue-800">{getBusinessData('marketSize', business.marketSize)}</p>
+                <p className="text-blue-800">{business.marketSize}</p>
               </div>
             </section>
 
@@ -542,7 +527,7 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Essential Skills</h3>
                   <div className="flex flex-wrap gap-2">
-                    {getBusinessData('requiredSkills', business.skills || business.requiredSkills || []).map((skill: string, index: number) => (
+                    {(business.skills || business.requiredSkills || []).map((skill: string, index: number) => (
                       <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
                         {skill}
                       </span>
@@ -585,7 +570,7 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Recommended Tools</h3>
                   <div className="space-y-2">
-                    {getBusinessData('tools', business.tools || []).map((tool: string, index: number) => (
+                    {(business.tools || []).map((tool: string, index: number) => (
                       <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg">
                         <Monitor className="h-4 w-4 text-gray-500 mr-3" />
                         <span className="text-gray-700">{tool}</span>
@@ -610,7 +595,7 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                     Key Advantages
                   </h3>
                   <ul className="space-y-3">
-                    {getBusinessData('pros', business.pros || []).map((pro: string, index: number) => (
+                    {(business.pros || []).map((pro: string, index: number) => (
                       <li key={index} className="flex items-start">
                         <CheckCircle className="h-4 w-4 text-green-500 mr-2 mt-1 flex-shrink-0" />
                         <span className="text-gray-700">{pro}</span>
@@ -625,7 +610,7 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                     Potential Challenges
                   </h3>
                   <ul className="space-y-3">
-                    {getBusinessData('cons', business.cons || []).map((con: string, index: number) => (
+                    {(business.cons || []).map((con: string, index: number) => (
                       <li key={index} className="flex items-start">
                         <AlertTriangle className="h-4 w-4 text-orange-500 mr-2 mt-1 flex-shrink-0" />
                         <span className="text-gray-700">{con}</span>
@@ -685,7 +670,7 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                   <div className="space-y-4">
                     <div className="p-4 bg-blue-50 rounded-lg">
                       <div className="font-medium text-blue-900">Market Size</div>
-                      <div className="text-blue-800">{getBusinessData('marketSize', business.marketSize)}</div>
+                      <div className="text-blue-800">{business.marketSize}</div>
                     </div>
                     <div className="p-4 bg-green-50 rounded-lg">
                       <div className="font-medium text-green-900">Growth Rate</div>
@@ -701,9 +686,9 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Success Factors</h3>
                   <div className="space-y-3">
-                    {getBusinessData('bestFitPersonality', business.bestFitPersonality || [
+                    {(business.bestFitPersonality || [
                       "Strong work ethic and consistency",
-                      "Willingness to learn and adapt", 
+                      "Willingness to learn and adapt",
                       "Customer-focused mindset"
                     ]).map((trait: string, index: number) => (
                       <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg">
@@ -723,41 +708,27 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 <h2 className="text-2xl font-bold text-gray-900">Step-by-Step Action Plan</h2>
               </div>
               
-              <div className="space-y-6">
-                {(() => {
-                  const actionPlan = getBusinessData('actionPlan', business.actionPlan);
-                  return actionPlan ? (
-                    Object.entries(actionPlan).map(([phase, tasks], phaseIndex) => (
+              {business.actionPlan && (
+                <div className="space-y-6">
+                  {Object.entries(business.actionPlan).map(([phase, tasks], index) => (
                     <div key={phase} className="border border-gray-200 rounded-lg p-6">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4 capitalize flex items-center">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
-                          phaseIndex === 0 ? 'bg-blue-100 text-blue-600' :
-                          phaseIndex === 1 ? 'bg-green-100 text-green-600' :
-                          'bg-purple-100 text-purple-600'
-                        }`}>
-                          {phaseIndex + 1}
-                        </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4 capitalize">
                         {phase.replace(/(\d+)/, ' $1').replace('phase', 'Phase')}
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <ul className="space-y-2">
                         {(tasks as string[]).map((task, taskIndex) => (
-                          <div key={taskIndex} className="flex items-start p-3 bg-gray-50 rounded-lg">
-                            <div className="w-6 h-6 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                              <span className="text-gray-600 text-xs font-bold">{taskIndex + 1}</span>
+                          <li key={taskIndex} className="flex items-start">
+                            <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                              <span className="text-blue-600 text-sm font-bold">{taskIndex + 1}</span>
                             </div>
-                            <span className="text-gray-700 text-sm">{task}</span>
-                          </div>
+                            <span className="text-gray-700">{task}</span>
+                          </li>
                         ))}
-                      </div>
+                      </ul>
                     </div>
-                  ))
-                  ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    Detailed action plan coming soon for this business model.
-                  </div>
-                  );
-                })()}
-              </div>
+                  ))}
+                </div>
+              )}
             </section>
 
             {/* Resources */}
@@ -767,14 +738,12 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 <h2 className="text-2xl font-bold text-gray-900">Learning Resources</h2>
               </div>
               
-              {(() => {
-                const resources = getBusinessData('resources', business.resources);
-                return resources && (
+              {business.resources && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-3">Platforms</h3>
                     <ul className="space-y-2">
-                      {resources.platforms?.map((platform: string, index: number) => (
+                      {business.resources.platforms?.map((platform: string, index: number) => (
                         <li key={index} className="text-gray-700">{platform}</li>
                       ))}
                     </ul>
@@ -782,7 +751,7 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-3">Learning</h3>
                     <ul className="space-y-2">
-                      {resources.learning?.map((resource: string, index: number) => (
+                      {business.resources.learning?.map((resource: string, index: number) => (
                         <li key={index} className="text-gray-700">{resource}</li>
                       ))}
                     </ul>
@@ -790,14 +759,13 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-3">Tools</h3>
                     <ul className="space-y-2">
-                      {resources.tools?.map((tool: string, index: number) => (
+                      {business.resources.tools?.map((tool: string, index: number) => (
                         <li key={index} className="text-gray-700">{tool}</li>
                       ))}
                     </ul>
                   </div>
                 </div>
-                );
-              })()}
+              )}
             </section>
 
             {/* Community & Support */}
