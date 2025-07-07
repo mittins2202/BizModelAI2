@@ -235,11 +235,11 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             onClick={scrollToTop}
-            className="fixed bottom-8 right-8 z-50 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110"
+            className="fixed bottom-8 right-8 z-50 bg-blue-600 hover:bg-blue-700 text-white p-2.5 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
           >
-            <ChevronUp className="h-6 w-6" />
+            <ChevronUp className="h-5 w-5" />
           </motion.button>
         )}
       </AnimatePresence>
