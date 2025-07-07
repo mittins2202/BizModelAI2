@@ -107,9 +107,29 @@ export class AIService {
         return this.generateFallbackAnalysis(quizData, topPath);
       }
 
-      // Create a comprehensive prompt for detailed analysis
+      // Generate personalized analysis
+      const personalizedAnalysis = await this.generatePersonalizedAnalysis(quizData, topPath);
+      
+      // Generate comprehensive business model details
+      const businessModelDetails = await this.generateBusinessModelDetails(topPath);
+      
+      return {
+        ...personalizedAnalysis,
+        aiGeneratedDetails: businessModelDetails
+      };
+    } catch (error) {
+      console.error("Error generating detailed analysis:", error);
+      return this.generateFallbackAnalysis(quizData, topPath);
+    }
+  }
+
+  private async generatePersonalizedAnalysis(
+    quizData: QuizData,
+    topPath: BusinessPath,
+  ): Promise<Omit<AIAnalysis, 'aiGeneratedDetails'>> {
+    try {
       const prompt = `
-Based on this user's quiz responses and their top business match (${topPath.name}), generate a comprehensive business model analysis.
+Based on this user's quiz responses and their top business match (${topPath.name}), generate a personalized business analysis.
 
 User Profile Summary:
 - Main Motivation: ${quizData.mainMotivation}
@@ -180,8 +200,70 @@ Write in an engaging, personalized tone as if speaking directly to them.
         ].filter(Boolean) as string[],
       };
     } catch (error) {
-      console.error("Error generating detailed analysis:", error);
-      return this.generateFallbackAnalysis(quizData, topPath);
+      console.error("Error generating personalized analysis:", error);
+      return {
+        fullAnalysis: this.generateFallbackAnalysisText(quizData, topPath),
+        keyInsights: [
+          "Your risk tolerance perfectly matches the requirements of this business model",
+          "Time commitment aligns with realistic income expectations and growth timeline",
+          "Technical skills provide a solid foundation for the tools and systems needed",
+          "Communication preferences match the customer interaction requirements",
+        ],
+        personalizedRecommendations: [
+          "Start with proven tools and systems to minimize learning curve",
+          "Focus on systematic execution rather than trying to reinvent approaches",
+          "Leverage your natural strengths while gradually building new skills",
+        ],
+        riskFactors: [
+          "Initial learning curve may require patience and persistence",
+          "Income may be inconsistent in the first few months",
+          "Success requires consistent daily action and follow-through",
+        ],
+        successPredictors: [
+          "Strong self-motivation indicates high likelihood of follow-through",
+          "Analytical approach will help optimize strategies and tactics",
+          "Realistic expectations set foundation for sustainable growth",
+        ],
+      };
+    }
+  }
+
+  private async generateBusinessModelDetails(topPath: BusinessPath): Promise<any> {
+    try {
+      // Only generate AI details for dropshipping initially
+      if (topPath.id !== 'e-commerce-dropshipping') {
+        return null;
+Ensure all information is current, accurate, and professional. Focus on 2024 market conditions and realistic expectations.
+
+Return only the JSON object, no additional text.
+      `;
+
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 1500,
+        temperature: 0.3,
+      });
+
+      const content = response.choices?.[0]?.message?.content;
+      if (!content) {
+        return null;
+      }
+
+      try {
+        // Parse JSON response
+        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          return JSON.parse(jsonMatch[0]);
+        }
+        return null;
+      } catch (parseError) {
+        console.error("Error parsing AI response JSON:", parseError);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error generating business model details:", error);
+      return null;
     }
   }
 

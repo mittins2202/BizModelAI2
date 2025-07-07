@@ -151,4 +151,33 @@ export interface AIAnalysis {
   personalizedRecommendations: string[];
   riskFactors: string[];
   successPredictors: string[];
+  aiGeneratedDetails?: {
+    detailedDescription?: string;
+    timeToProfit?: string;
+    startupCost?: string;
+    potentialIncome?: string;
+    averageIncome?: {
+      beginner: string;
+      intermediate: string;
+      advanced: string;
+    };
+    requiredSkills?: string[];
+    tools?: string[];
+    pros?: string[];
+    cons?: string[];
+    marketSize?: string;
+    actionPlan?: {
+      phase1: string[];
+      phase2: string[];
+      phase3: string[];
+    };
+    bestFitPersonality?: string[];
+    userStruggles?: string[];
+    solutions?: string[];
+    resources?: {
+      platforms: string[];
+      learning: string[];
+      tools: string[];
+    };
+  };
 }
