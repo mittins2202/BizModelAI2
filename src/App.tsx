@@ -23,6 +23,7 @@ import EmailCapture from "./components/EmailCapture";
 import BusinessModelDetail from "./components/BusinessModelDetail";
 import BusinessGuide from "./components/BusinessGuide";
 import DownloadReportPage from "./pages/DownloadReportPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 import { QuizData } from "./types";
 
 function App() {
@@ -241,6 +242,12 @@ function App() {
             <Route
               path="/report"
               element={<DownloadReportPage />}
+            />
+
+            {/* Privacy Policy */}
+            <Route
+              path="/privacy"
+              element={<PrivacyPolicy />}
             />
           </Routes>
         </Router>
