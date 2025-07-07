@@ -22,11 +22,11 @@ import {
   MessageCircle,
   Shield,
   Briefcase,
-  Heart
-} from 'lucide-react';
-import { QuizData, BusinessPath } from '../types';
+  Heart,
   ExternalLink,
   ChevronUp
+} from 'lucide-react';
+import { QuizData, BusinessPath } from '../types';
 import { businessModels } from '../data/businessModels';
 import { calculateFitScore } from '../utils/quizLogic';
 import { AIService } from '../utils/aiService';
