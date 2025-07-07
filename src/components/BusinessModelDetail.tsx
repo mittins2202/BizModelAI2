@@ -309,7 +309,7 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-xl md:text-2xl text-slate-300 mb-8 leading-relaxed">
+                <p className="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
                   {business.detailedDescription || business.description}
                 </p>
 
@@ -398,33 +398,33 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({
                 <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6">
                   Guide Sections
                 </h3>
-                <nav className="space-y-2">
+                <nav className="space-y-1.5">
                   {sidebarItems.map((item) => (
                     <button
                       key={item.id}
                       onClick={() => scrollToSection(item.id)}
-                      className={`w-full flex items-center px-4 py-3 text-left rounded-xl transition-all duration-300 ${
+                      className={`w-full flex items-center px-3 py-2.5 text-left rounded-xl transition-all duration-300 ${
                         activeSection === item.id
                           ? "bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 border-l-4 border-blue-700 shadow-lg transform scale-105"
                           : "text-gray-700 hover:bg-gray-50 hover:scale-102"
                       }`}
                     >
                       <div
-                        className={`w-10 h-10 rounded-xl flex items-center justify-center mr-3 ${
+                        className={`w-8 h-8 rounded-xl flex items-center justify-center mr-2.5 ${
                           activeSection === item.id
                             ? "bg-gradient-to-r from-blue-600 to-purple-600"
                             : "bg-gray-100"
                         }`}
                       >
                         <item.icon
-                          className={`h-5 w-5 ${
+                          className={`h-4 w-4 ${
                             activeSection === item.id
                               ? "text-white"
                               : "text-gray-600"
                           }`}
                         />
                       </div>
-                      <span className="font-medium">{item.label}</span>
+                      <span className="font-medium text-sm">{item.label}</span>
                     </button>
                   ))}
                 </nav>
