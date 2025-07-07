@@ -236,41 +236,48 @@ Write in an engaging, personalized tone as if speaking directly to them.
       }
 
       const prompt = `
-Generate comprehensive, accurate business model details for E-commerce / Dropshipping in JSON format.
+Generate detailed, practical information about dropshipping business models in 2024. Include:
 
-Return a JSON object with these exact fields:
 {
-  "detailedDescription": "Comprehensive 2-3 paragraph description of dropshipping business model",
-  "timeToProfit": "Realistic timeframe to first profit",
-  "startupCost": "Realistic startup cost range",
-  "potentialIncome": "Realistic income potential range",
-  "averageIncome": {
-    "beginner": "Income for 0-6 months",
-    "intermediate": "Income for 6-18 months", 
-    "advanced": "Income for 18+ months"
+  "marketOverview": {
+    "currentState": "",
+    "trends": [],
+    "opportunities": [],
+    "challenges": []
   },
-  "requiredSkills": ["skill1", "skill2", "skill3", "skill4", "skill5"],
-  "tools": ["tool1", "tool2", "tool3", "tool4", "tool5"],
-  "pros": ["advantage1", "advantage2", "advantage3", "advantage4"],
-  "cons": ["challenge1", "challenge2", "challenge3", "challenge4"],
-  "marketSize": "Current market size and growth information",
-  "actionPlan": {
-    "phase1": ["task1", "task2", "task3", "task4"],
-    "phase2": ["task1", "task2", "task3", "task4"],
-    "phase3": ["task1", "task2", "task3", "task4"]
+  "gettingStarted": {
+    "essentialSteps": [],
+    "requiredTools": [],
+    "initialInvestment": {
+      "minimum": "",
+      "recommended": "",
+      "breakdown": []
+    }
   },
-  "bestFitPersonality": ["trait1", "trait2", "trait3", "trait4"],
-  "userStruggles": ["struggle1", "struggle2", "struggle3"],
-  "solutions": ["solution1", "solution2", "solution3"],
-  "resources": {
-    "platforms": ["platform1", "platform2", "platform3"],
-    "learning": ["resource1", "resource2", "resource3"],
-    "tools": ["tool1", "tool2", "tool3"]
+  "successFactors": {
+    "keyStrategies": [],
+    "commonMistakes": [],
+    "competitiveAdvantages": []
+  },
+  "profitabilityAnalysis": {
+    "typicalMargins": "",
+    "breakevenTimeline": "",
+    "scalingFactors": [],
+    "expenseConsiderations": []
+  },
+  "marketingStrategies": {
+    "effectiveChannels": [],
+    "customerAcquisition": [],
+    "brandBuilding": []
+  },
+  "operationalTips": {
+    "supplierRelations": [],
+    "inventoryManagement": [],
+    "customerService": [],
+    "automation": []
   }
 }
 
-Focus on 2024 market conditions, realistic expectations, and current best practices.
-Be specific and actionable in all recommendations.
 Ensure all information is current, accurate, and professional. Focus on 2024 market conditions and realistic expectations.
 
 Return only the JSON object, no additional text.
@@ -584,7 +591,7 @@ Write a motivational message that feels like it's coming from a mentor who truly
     quizData: QuizData,
     topPath: BusinessPath,
   ): string {
-    return `Your assessment reveals a remarkable alignment between your personal profile and ${topPath.name}. With a ${topPath.fitScore}% compatibility score, this represents more than just a good fit—it's potentially your ideal entrepreneurial path. Your unique combination of risk tolerance, time availability, and skill set creates natural advantages in this field. The way you approach decisions, handle challenges, and prefer to work all point toward success in this specific business model. Your timeline expectations are realistic given your commitment level, and your technical comfort provides the foundation needed for the tools and systems required. Most importantly, this path aligns with your core motivations and long-term vision, creating the sustainable motivation needed for entrepreneurial success.`;
+    return \`Your assessment reveals a remarkable alignment between your personal profile and ${topPath.name}. With a ${topPath.fitScore}% compatibility score, this represents more than just a good fit—it's potentially your ideal entrepreneurial path. Your unique combination of risk tolerance, time availability, and skill set creates natural advantages in this field. The way you approach decisions, handle challenges, and prefer to work all point toward success in this specific business model. Your timeline expectations are realistic given your commitment level, and your technical comfort provides the foundation needed for the tools and systems required. Most importantly, this path aligns with your core motivations and long-term vision, creating the sustainable motivation needed for entrepreneurial success.`;
   }
 
   private parseListResponse(content: string, expectedCount: number): string[] {
@@ -739,7 +746,7 @@ Write a motivational message that feels like it's coming from a mentor who truly
     const topPath = topPaths[0];
 
     return {
-      personalizedSummary: `Based on your comprehensive assessment, ${topPath.name} achieves a ${topPath.fitScore}% compatibility score with your unique profile. Your goals, personality traits, and available resources align perfectly with this business model's requirements and potential outcomes.`,
+      personalizedSummary: \`Based on your comprehensive assessment, ${topPath.name} achieves a ${topPath.fitScore}% compatibility score with your unique profile. Your goals, personality traits, and available resources align perfectly with this business model's requirements and potential outcomes.`,
       customRecommendations: this.getFallbackRecommendations(),
       potentialChallenges: this.getFallbackChallenges(),
       successStrategies: this.getFallbackStrategies(),
