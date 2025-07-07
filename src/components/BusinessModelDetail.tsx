@@ -1,37 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  ArrowLeft, 
-  TrendingUp, 
-  Clock, 
-  DollarSign, 
-  Users, 
-  CheckCircle, 
-  AlertTriangle,
-  Star,
-  Target,
-  Brain,
-  Lightbulb,
-  Calendar,
-  BarChart3,
-  Award,
-  Zap,
-  BookOpen,
-  Monitor,
-  MessageCircle,
-  Shield,
-  Briefcase,
-  Heart,
-  ExternalLink,
-  ChevronUp,
-  Sparkles,
-  Rocket,
-  Trophy,
-  Fire,
-  Crown,
-  Gem
-} from 'lucide-react';
+import { ArrowLeft, TrendingUp, Clock, DollarSign, Users, CheckCircle, AlertTriangle, Star, Target, Brain, Lightbulb, Calendar, BarChart3, Award, Zap, BookOpen, Monitor, MessageCircle, Shield, Briefcase, Heart, ExternalLink, ChevronUp, Sparkles, Rocket, Trophy, Siren as Fire, Crown, Gem } from 'lucide-react';
 import { QuizData, BusinessPath } from '../types';
 import { businessModels } from '../data/businessModels';
 import { businessPaths } from '../data/businessPaths';
