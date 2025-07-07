@@ -147,22 +147,36 @@ const ExitWarningModal: React.FC<ExitWarningModalProps> = ({
   onClose,
   onConfirmExit,
 }) => {
+  // Add escape key handling
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 z-50">
       <motion.div
         // REMOVED initial={{ opacity: 0, scale: 0.9, y: 20 }} to show immediately
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }}
         transition={{ duration: 0.3 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl shadow-2xl max-w-md w-full relative overflow-hidden opacity-100"
+        className="bg-white rounded-3xl shadow-2xl max-w-lg w-full relative overflow-hidden opacity-100 max-h-[90vh] overflow-y-auto"
       >
         {/* Background decoration */}
         <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50"></div>
 
-        <div className="relative p-12 py-16">
+        <div className="relative p-8 py-12">
           {/* Close button */}
           <button
             onClick={onClose}
@@ -283,13 +297,20 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
+
+        // If we're on the first round intro page, go directly home without exit modal
+        if (showRoundIntro && currentRound === 1 && currentStep === 0) {
+          onBack();
+          return;
+        }
+
         setShowExitModal(true);
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [showRoundIntro, currentRound, currentStep, onBack]);
 
   // Add keyboard event handlers for round intro pages
   useEffect(() => {
@@ -393,8 +414,8 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
         }, 300);
       }
     } else {
-      // Show exit warning modal instead of immediately going back
-      setShowExitModal(true);
+      // If we're on the first question (step 0), go back to the round intro page
+      setShowRoundIntro(true);
       setIsAnimating(false);
     }
   };
@@ -415,8 +436,16 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
   const handleBackButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("Back button clicked - showing exit modal immediately");
+    console.log("Back button clicked - checking if first round intro page");
 
+    // If we're on the first round intro page, go directly home without exit modal
+    if (showRoundIntro && currentRound === 1 && currentStep === 0) {
+      console.log("On first round intro page - going directly home");
+      onBack();
+      return;
+    }
+
+    console.log("Showing exit modal");
     // Force immediate state update using callback form
     setShowExitModal((prevState) => {
       console.log("Setting exit modal to true, previous state was:", prevState);
@@ -447,8 +476,13 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
 
       setShowRoundIntro(false);
     } else {
-      // If we're at the first step, show exit modal
-      setShowExitModal(true);
+      // If we're on the first round intro page, go directly home without exit modal
+      if (currentRound === 1 && currentStep === 0) {
+        onBack();
+      } else {
+        // For all other cases, show exit modal
+        setShowExitModal(true);
+      }
     }
   };
 
