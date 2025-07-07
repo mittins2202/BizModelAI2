@@ -304,6 +304,15 @@ const FullReport: React.FC<FullReportProps> = ({
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-purple-700 to-indigo-800 text-white relative">
+        {/* Exit Arrow - Upper Left Corner */}
+        <button
+          onClick={onBack}
+          className="absolute top-8 left-8 p-3 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300"
+          title="Back to Results"
+        >
+          <ArrowLeft className="h-6 w-6 text-white" />
+        </button>
+        
         <div className="text-center max-w-4xl mx-auto px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -352,19 +361,9 @@ const FullReport: React.FC<FullReportProps> = ({
             <div className="lg:col-span-1">
               <div className="sticky top-8">
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                  {/* Exit Arrow */}
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Report Sections
-                    </h3>
-                    <button
-                      onClick={onBack}
-                      className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                      title="Back to Results"
-                    >
-                      <ArrowLeft className="h-4 w-4 text-gray-600" />
-                    </button>
-                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Report Sections
+                  </h3>
                   <nav className="space-y-2">
                     {sidebarItems.map((item) => (
                       <button
