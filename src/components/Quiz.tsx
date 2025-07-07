@@ -461,8 +461,13 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
 
       setShowRoundIntro(false);
     } else {
-      // If we're at the first step, show exit modal
-      setShowExitModal(true);
+      // If we're on the first round intro page, go directly home without exit modal
+      if (currentRound === 1 && currentStep === 0) {
+        onBack();
+      } else {
+        // For all other cases, show exit modal
+        setShowExitModal(true);
+      }
     }
   };
 
