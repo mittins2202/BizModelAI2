@@ -746,7 +746,6 @@ Write a motivational message that feels like it's coming from a mentor who truly
     const topPath = topPaths[0];
 
     return {
-      personalizedSummary: \`Based on your comprehensive assessment, ${topPath.name} achieves a ${topPath.fitScore}% compatibility score with your unique profile. Your goals, personality traits, and available resources align perfectly with this business model's requirements and potential outcomes.`,
       personalizedSummary: `Based on your comprehensive assessment, ${topPath.name} achieves a ${topPath.fitScore}% compatibility score with your unique profile. Your goals, personality traits, and available resources align perfectly with this business model's requirements and potential outcomes.`,
       customRecommendations: this.getFallbackRecommendations(),
       potentialChallenges: this.getFallbackChallenges(),
