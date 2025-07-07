@@ -22,6 +22,7 @@ import Results from "./components/Results";
 import EmailCapture from "./components/EmailCapture";
 import BusinessModelDetail from "./components/BusinessModelDetail";
 import BusinessGuide from "./components/BusinessGuide";
+import DownloadReportPage from "./pages/DownloadReportPage";
 import { QuizData } from "./types";
 
 function App() {
@@ -234,6 +235,12 @@ function App() {
                   <BusinessGuide quizData={quizData} />
                 </Layout>
               }
+            />
+
+            {/* Download Report Page */}
+            <Route
+              path="/report"
+              element={<DownloadReportPage />}
             />
           </Routes>
         </Router>
