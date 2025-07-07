@@ -967,14 +967,8 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 <h3 className="text-2xl font-bold text-white mb-6">Ready to Start Your Journey?</h3>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button className="bg-white text-blue-600 px-12 py-4 rounded-xl font-bold hover:bg-blue-50 transition-colors">
-                    onClick={handleGetStarted}
-                    Get Started Now
-                  </button>
                 </div>
               </div>
-            </section>
-          </div>
-        </div>
       </div>
     </div>
   );
