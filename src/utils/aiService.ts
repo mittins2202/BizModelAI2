@@ -233,6 +233,44 @@ Write in an engaging, personalized tone as if speaking directly to them.
       // Only generate AI details for dropshipping initially
       if (topPath.id !== 'e-commerce-dropshipping') {
         return null;
+      }
+
+      const prompt = `
+Generate comprehensive, accurate business model details for E-commerce / Dropshipping in JSON format.
+
+Return a JSON object with these exact fields:
+{
+  "detailedDescription": "Comprehensive 2-3 paragraph description of dropshipping business model",
+  "timeToProfit": "Realistic timeframe to first profit",
+  "startupCost": "Realistic startup cost range",
+  "potentialIncome": "Realistic income potential range",
+  "averageIncome": {
+    "beginner": "Income for 0-6 months",
+    "intermediate": "Income for 6-18 months", 
+    "advanced": "Income for 18+ months"
+  },
+  "requiredSkills": ["skill1", "skill2", "skill3", "skill4", "skill5"],
+  "tools": ["tool1", "tool2", "tool3", "tool4", "tool5"],
+  "pros": ["advantage1", "advantage2", "advantage3", "advantage4"],
+  "cons": ["challenge1", "challenge2", "challenge3", "challenge4"],
+  "marketSize": "Current market size and growth information",
+  "actionPlan": {
+    "phase1": ["task1", "task2", "task3", "task4"],
+    "phase2": ["task1", "task2", "task3", "task4"],
+    "phase3": ["task1", "task2", "task3", "task4"]
+  },
+  "bestFitPersonality": ["trait1", "trait2", "trait3", "trait4"],
+  "userStruggles": ["struggle1", "struggle2", "struggle3"],
+  "solutions": ["solution1", "solution2", "solution3"],
+  "resources": {
+    "platforms": ["platform1", "platform2", "platform3"],
+    "learning": ["resource1", "resource2", "resource3"],
+    "tools": ["tool1", "tool2", "tool3"]
+  }
+}
+
+Focus on 2024 market conditions, realistic expectations, and current best practices.
+Be specific and actionable in all recommendations.
 Ensure all information is current, accurate, and professional. Focus on 2024 market conditions and realistic expectations.
 
 Return only the JSON object, no additional text.
