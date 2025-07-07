@@ -297,13 +297,20 @@ const Quiz: React.FC<QuizProps> = ({ onComplete, onBack }) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
+
+        // If we're on the first round intro page, go directly home without exit modal
+        if (showRoundIntro && currentRound === 1 && currentStep === 0) {
+          onBack();
+          return;
+        }
+
         setShowExitModal(true);
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [showRoundIntro, currentRound, currentStep, onBack]);
 
   // Add keyboard event handlers for round intro pages
   useEffect(() => {
