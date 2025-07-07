@@ -179,7 +179,7 @@ function Index() {
                   {
                     step: "1",
                     title: "Take the Smart Quiz",
-                    description: "Answer 45+ questions about your goals, personality, skills, and resources. Takes 10-15 minutes."
+                    description: "Answer 45 questions about your goals, personality, skills, and resources. Takes 10-15 minutes."
                   },
                   {
                     step: "2",
@@ -215,7 +215,7 @@ function Index() {
               <h3 className="text-2xl font-bold text-white mb-6">What You'll Get:</h3>
               <ul className="space-y-4">
                 {[
-                  "Top 3 business models ranked by fit percentage",
+                  "Top business models ranked by fit percentage",
                   "Detailed strengths & challenges for each path",
                   "Step-by-step action plans to get started",
                   "Curated resources and tools",
