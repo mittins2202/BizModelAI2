@@ -1768,7 +1768,7 @@ const FullReport: React.FC<FullReportProps> = ({
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };
