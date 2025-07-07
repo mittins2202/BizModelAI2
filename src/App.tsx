@@ -219,13 +219,21 @@ function App() {
             {/* Business Model Detail Page */}
             <Route
               path="/business/:businessId"
-              element={<BusinessModelDetail quizData={quizData} />}
+              element={
+                <Layout>
+                  <BusinessModelDetail quizData={quizData} />
+                </Layout>
+              }
             />
 
             {/* Business Guide Page */}
             <Route
               path="/guide/:businessId"
-              element={<BusinessGuide quizData={quizData} />}
+              element={
+                <Layout>
+                  <BusinessGuide quizData={quizData} />
+                </Layout>
+              }
             />
           </Routes>
         </Router>
