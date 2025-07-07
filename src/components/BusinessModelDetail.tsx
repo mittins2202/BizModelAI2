@@ -327,9 +327,15 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 ) : aiAnalysis ? (
                   <>
                     <div className="prose max-w-none mb-6">
-                      <p className="text-gray-700 leading-relaxed">
-                        {aiAnalysis.fullAnalysis}
-                      </p>
+                      <div className="text-gray-700 leading-relaxed space-y-4">
+                        {aiAnalysis.fullAnalysis.split('\n').map((paragraph, index) => {
+                          const trimmedParagraph = paragraph.trim();
+                          if (trimmedParagraph) {
+                            return <p key={index}>{trimmedParagraph}</p>;
+                          }
+                          return null;
+                        })}
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

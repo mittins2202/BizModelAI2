@@ -122,14 +122,19 @@ User Profile Summary:
 
 Top Business Match: ${topPath.name} (${topPath.fitScore}% fit)
 
-Generate a detailed analysis (300-400 words) that explains:
+Generate a professional business analysis in plain text format (no markdown, no asterisks, no bold formatting) that explains:
 1. Why this business model is specifically suited to their personality and goals
 2. How their unique combination of traits creates advantages in this field
 3. Specific strategies they should use based on their profile
 4. Timeline expectations based on their commitment level
 5. How to leverage their strengths and mitigate weaknesses
 
-Write in an engaging, personalized tone as if speaking directly to them.
+Requirements:
+- Write in a professional, consultative tone
+- Use clear, direct language without excessive enthusiasm
+- No markdown formatting (no **, no #, no bullet points)
+- 250-350 words maximum
+- Focus on actionable insights and realistic expectations
       `;
 
       const response = await openai.chat.completions.create({
