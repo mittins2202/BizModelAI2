@@ -161,7 +161,6 @@ const FullReport: React.FC<FullReportProps> = ({
   const sidebarItems = [
     { id: "overview", label: "Executive Summary", icon: BarChart3 },
     { id: "ai-analysis", label: "AI Personalized Analysis", icon: Brain },
-    { id: "personality-snapshot", label: "Personality Snapshot", icon: Users },
     { id: "top-matches", label: "Your Top 3 Matches", icon: Target },
     {
       id: "business-to-avoid",
@@ -257,11 +256,11 @@ const FullReport: React.FC<FullReportProps> = ({
     generateInsights();
   }, [quizData]);
 
-  // Scroll to Complete Business Report section
-  const scrollToCompleteReport = () => {
-    const completeReportSection = document.getElementById("complete-report");
-    if (completeReportSection) {
-      completeReportSection.scrollIntoView({ behavior: "smooth" });
+  // Scroll to AI analysis section
+  const scrollToAIAnalysis = () => {
+    const aiAnalysisSection = document.getElementById("ai-analysis");
+    if (aiAnalysisSection) {
+      aiAnalysisSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -324,9 +323,9 @@ const FullReport: React.FC<FullReportProps> = ({
               success.
             </p>
 
-            {/* Chevron to scroll to Complete Business Report */}
+            {/* Chevron to scroll to AI analysis */}
             <motion.button
-              onClick={scrollToCompleteReport}
+              onClick={scrollToAIAnalysis}
               className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto hover:bg-white/30 transition-all duration-300"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -340,9 +339,41 @@ const FullReport: React.FC<FullReportProps> = ({
         </div>
       </section>
 
-      {/* Your Complete Business Report Section */}
-      <section id="complete-report" className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      {/* AI Analysis Section with Personality Snapshot */}
+      <section id="ai-analysis" className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Your AI-Generated Analysis
+            </h2>
+            <p className="text-xl text-gray-600">
+              Personalized insights based on your unique profile
+            </p>
+          </div>
+
+          {/* Personality Snapshot */}
+          <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-8 mb-16">
+            <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+              Your Personality Snapshot
+            </h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              {traitSliders.map((slider, index) => (
+                <TraitSlider
+                  key={index}
+                  label={slider.label}
+                  value={traitScores[slider.trait]}
+                  leftLabel={slider.leftLabel}
+                  rightLabel={slider.rightLabel}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Content with Sidebar */}
+      <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -657,31 +688,6 @@ const FullReport: React.FC<FullReportProps> = ({
                     </div>
                   </div>
                 )}
-              </section>
-
-              {/* Personality Snapshot */}
-              <section
-                id="personality-snapshot"
-                className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8"
-              >
-                <div className="flex items-center mb-6">
-                  <Users className="h-6 w-6 text-purple-600 mr-3" />
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    Your Personality Snapshot
-                  </h2>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-8">
-                  {traitSliders.map((slider, index) => (
-                    <TraitSlider
-                      key={index}
-                      label={slider.label}
-                      value={traitScores[slider.trait]}
-                      leftLabel={slider.leftLabel}
-                      rightLabel={slider.rightLabel}
-                    />
-                  ))}
-                </div>
               </section>
 
               {/* Top 3 Matches */}
@@ -1768,7 +1774,7 @@ const FullReport: React.FC<FullReportProps> = ({
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };
