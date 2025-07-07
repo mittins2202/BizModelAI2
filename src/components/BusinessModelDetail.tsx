@@ -162,6 +162,10 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
     }
   };
 
+  const handleGetStarted = () => {
+    scrollToSection('overview');
+  };
+
   // Update active section based on scroll position
   useEffect(() => {
     const handleScroll = () => {
@@ -396,28 +400,18 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 </h2>
               </div>
               
-              <div className="prose max-w-none mb-8">
-                <p className="text-gray-700 leading-relaxed text-lg">
+              <div className="prose max-w-none mb-6">
+                <p className="text-gray-700 leading-relaxed text-base mb-4">
                   {business.detailedDescription || business.description}
                 </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center p-6 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl border border-blue-200">
-                  <Clock className="h-10 w-10 text-blue-600 mx-auto mb-3" />
-                  <div className="font-bold text-gray-900 text-lg">{business.timeToProfit || business.timeToStart}</div>
-                  <div className="text-sm text-gray-600 font-medium">Time to Profit</div>
-                </div>
-                <div className="text-center p-6 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl border border-green-200">
-                  <DollarSign className="h-10 w-10 text-green-600 mx-auto mb-3" />
-                  <div className="font-bold text-gray-900 text-lg">{business.startupCost || business.initialInvestment}</div>
-                  <div className="text-sm text-gray-600 font-medium">Startup Cost</div>
-                </div>
-                <div className="text-center p-6 bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl border border-purple-200">
-                  <TrendingUp className="h-10 w-10 text-purple-600 mx-auto mb-3" />
-                  <div className="font-bold text-gray-900 text-lg">{business.potentialIncome}</div>
-                  <div className="text-sm text-gray-600 font-medium">Income Potential</div>
-                </div>
+                
+                <p className="text-gray-700 leading-relaxed text-base mb-4">
+                  This business model has gained significant traction due to its accessibility and scalability. Whether you're looking to supplement your current income or build a full-time business, this path offers multiple revenue streams and growth opportunities. The key to success lies in understanding your target market, delivering consistent value, and building strong relationships with your audience or customers.
+                </p>
+                
+                <p className="text-gray-700 leading-relaxed text-base mb-6">
+                  What sets this business model apart is its flexibility and relatively low barrier to entry. You can start small, test different approaches, and scale based on what works best for your situation. Many successful entrepreneurs in this field started as complete beginners and built profitable businesses by focusing on solving real problems for their customers and continuously improving their offerings based on feedback and market demands.
+                </p>
               </div>
             </section>
 
@@ -973,10 +967,8 @@ const BusinessModelDetail: React.FC<BusinessModelDetailProps> = ({ quizData }) =
                 <h3 className="text-2xl font-bold text-white mb-6">Ready to Start Your Journey?</h3>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button className="bg-white text-blue-600 px-12 py-4 rounded-xl font-bold hover:bg-blue-50 transition-colors">
+                    onClick={handleGetStarted}
                     Get Started Now
-                  </button>
-                  <button className="border-2 border-white text-white px-12 py-4 rounded-xl font-bold hover:bg-white/10 transition-colors">
-                    Download Action Plan
                   </button>
                 </div>
               </div>
