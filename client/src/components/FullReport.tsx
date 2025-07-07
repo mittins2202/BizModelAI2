@@ -307,10 +307,10 @@ const FullReport: React.FC<FullReportProps> = ({
         {/* Exit Arrow - Upper Left Corner */}
         <button
           onClick={onBack}
-          className="absolute top-8 left-8 p-3 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300"
+          className="absolute top-8 left-8 p-2 hover:opacity-80 transition-opacity duration-300"
           title="Back to Results"
         >
-          <ArrowLeft className="h-6 w-6 text-white" />
+          <ArrowLeft className="h-8 w-8 text-white" />
         </button>
         
         <div className="text-center max-w-4xl mx-auto px-8">
