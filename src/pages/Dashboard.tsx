@@ -191,11 +191,14 @@ const Dashboard: React.FC = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="group bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center">
+                <Link 
+                  to={`/guide/${recommendedBusiness.id || 'content-creation-ugc'}`}
+                  className="group bg-white text-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all duration-300 transform hover:scale-[1.02] flex items-center justify-center"
+                >
                   <Play className="h-6 w-6 mr-3" />
                   Start Complete Guide
                   <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </Link>
                 <Link
                   to="/results"
                   className="border-2 border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all duration-300 flex items-center justify-center"
@@ -296,9 +299,7 @@ const Dashboard: React.FC = () => {
                         {action.title}
                       </h3>
                       <p className="text-gray-600 text-sm">{action.description}</p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
-                  </Link>
+                  Start Complete Guide
                 ))}
               </div>
             </div>
