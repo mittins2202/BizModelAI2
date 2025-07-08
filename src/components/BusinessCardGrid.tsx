@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Clock, DollarSign, TrendingUp, CheckCircle, AlertTriangle, Star } from 'lucide-react';
 
 interface BusinessCardData {
