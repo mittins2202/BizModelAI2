@@ -302,7 +302,6 @@ const Dashboard: React.FC = () => {
                     </div>
                     <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
                   </Link>
-                  Start Complete Guide
                 ))}
               </div>
             </div>
