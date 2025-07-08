@@ -299,6 +299,9 @@ const Dashboard: React.FC = () => {
                         {action.title}
                       </h3>
                       <p className="text-gray-600 text-sm">{action.description}</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+                  </Link>
                   Start Complete Guide
                 ))}
               </div>
