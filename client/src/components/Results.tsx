@@ -218,6 +218,10 @@ const Results: React.FC<ResultsProps> = ({ quizData, onBack, userEmail }) => {
       return;
     }
     setShowFullReport(true);
+    // Scroll to top of page after a brief delay to ensure DOM is updated
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   };
 
   const handleLearnMore = (path: BusinessPath) => {
@@ -254,11 +258,19 @@ const Results: React.FC<ResultsProps> = ({ quizData, onBack, userEmail }) => {
       // Navigate to "How business model X works for you" page
       navigate(`/business/${selectedPath.id}`);
     } else if (paywallType === "full-report") {
-      // Show the full report
+      // Show the full report and scroll to top
       setShowFullReport(true);
+      // Scroll to top of page after a brief delay to ensure DOM is updated
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
     } else {
-      // Default fallback to full report
+      // Default fallback to full report and scroll to top
       setShowFullReport(true);
+      // Scroll to top of page after a brief delay to ensure DOM is updated
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
     }
 
     // In a real implementation, this would:
