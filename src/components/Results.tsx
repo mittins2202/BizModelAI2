@@ -1314,21 +1314,38 @@ Business Path Platform - businesspath.com
       </div>
 
       {/* Inspirational Banner */}
-      <div className="py-12 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-700 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-32 translate-x-32"></div>
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24"></div>
+        
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center"
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
           >
-            <blockquote className="text-xl font-semibold text-gray-900 mb-3">
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6">
+              <Star className="h-8 w-8 text-white" />
+            </div>
+            <blockquote className="text-2xl md:text-3xl font-bold text-white mb-4 leading-relaxed">
               "The way to get started is to quit talking and begin doing."
             </blockquote>
-            <cite className="text-gray-600">— Walt Disney</cite>
+            <cite className="text-blue-200 text-lg font-medium">— Walt Disney</cite>
+            <div className="mt-8 max-w-2xl mx-auto">
+              <p className="text-blue-100 text-lg leading-relaxed">
+                Your personalized business path is just the beginning. Success comes from taking that first step, 
+                then the next, and building momentum one day at a time.
+              </p>
+            </div>
           </motion.div>
         </div>
-      </div>
+      </section>
+
+      {/* Paywall Modal */}
+      <PaywallModal
         isOpen={showUnlockModal}
         onClose={() => setShowUnlockModal(false)}
         onUnlock={
@@ -1343,5 +1360,3 @@ Business Path Platform - businesspath.com
 };
 
 export default Results;
-
-    <PaywallModal
